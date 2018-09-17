@@ -1,42 +1,39 @@
-const album = require('./album.js');
+class Album {
 
-class Artist {
-    
-    constructor() {
-        this.id = id;
+    constructor(){
         this.name = name;
-        this.year = year;
-        this.country = country;
-        this.albums = [];
+        this.tracks = [];
     }
 
-  isArtist(name){
-    return this.hasAttribute("name")
-  }
+    addTrack(track){
+        this.tracks.push(track);
+        return track;
+    }
 
-  isId(){
-    return this.hasAttribute("id")
-  }
+    searchTrack(trackName){
+        let searchedTrack = this.getTracks().find(track => track.isTrack(trackName));
+        if (searchedTrack === undefined){
+            throw new Error("No se encontro el track " + trackName);
+        }     
+        return searchedTrack;
+    }
 
-  addAlbum(album){
-      this.albums.push(album);
-      return album;
-  } 
-
-  removeAlbum(name){
-      albums.splice(albums.findIndex(album => album.getName === name), 1);
-  } 
-
-  editCountry(newCountry){
-      this.country = newCountry;
-  }
-  
-  getTracks(){
-      return this.albums.forEach(album => album.getTracks());
-  } 
-  
-  getAlbums(){
-      return this.albums;
-  }
-
+    removeTrack(trackName){
+        let removedTrack = this.searchTrack(trackName);
+        if (removedTrack === undefined){
+            throw new Error("No se encontro el track " + trackName);
+        }   
+        tracks.splice(tracks.findIndex(track => track.getId === removedTrack.getId), 1);
+    } 
+    
+    hasName(albumName){
+        return this.hasAttribute("albumName")   
+    }
+    
+    getTracks(){
+        return this.tracks;
+    }
+    getName(){
+        return this.name;
+    }
 }
