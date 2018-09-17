@@ -10,12 +10,12 @@ class Artist {
         this.albums = [];
     }
 
-  isArtist(){
-      //TODO
+  isArtist(name){
+    return this.hasAttribute("name")
   }
 
   isId(){
-      //TODO
+    return this.hasAttribute("id")
   }
 
   addAlbum(album){
