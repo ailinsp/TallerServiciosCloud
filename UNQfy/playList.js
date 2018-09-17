@@ -1,6 +1,5 @@
 /*                                                PlayList                                                             */ 
-const Track = require("Track");
-
+const track = require('./track.js');
 
 var tracks= [];
 var namePlayList = "";

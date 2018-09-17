@@ -1,3 +1,5 @@
+const album = require('./album.js');
+
 class Artist {
     
     constructor() {

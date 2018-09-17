@@ -1,7 +1,9 @@
-
 const picklify = require('picklify'); // para cargar/guarfar unqfy
 const fs = require('fs'); // para cargar/guarfar unqfy
-
+const track = require('./track.js');
+const playList = require('./playList.js');
+const artist = require('./artist.js');
+const album = require('./album.js');
 
 class UNQfy {
 
@@ -131,7 +133,7 @@ class UNQfy {
     // IMPLEMENTAR: removeTrack en Playlist que, dado un track lo elimina de sus tracks
     //... si no lo tiene, no hace nada.
     album.removeTrack(trackToRemove);
-    // IMPLEMENTAR: removeTrack en Album que, ddo un track lo elimina de sus tracks
+    // IMPLEMENTAR: removeTrack en Album que, dado un track lo elimina de sus tracks
     // ... si no lo tiene informa el error.
     console.log("Se ha eliminado el track " + trackName + " del album " + albumName + " con exito.");
   }
@@ -293,8 +295,6 @@ class UNQfy {
 
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
 module.exports = {
-  UNQfy,
-  Artist,
-  Album,
+  UNQfy, track, playList, artist, album
 };
 
