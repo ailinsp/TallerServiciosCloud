@@ -13,7 +13,6 @@ class Album {
 
     addTrack(track){
         this.tracks.push(track);
-        return track;
     }
 
     searchTrack(trackName){
@@ -36,7 +35,7 @@ class Album {
         return this.name === albumName;   
     }
 
-    hasId(albumId){
+    isId(albumId){
         return this.id === albumId;    
     }
     

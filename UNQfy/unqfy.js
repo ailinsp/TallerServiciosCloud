@@ -14,9 +14,12 @@ class UNQfy {
   }
 
   getAllAlbums(){
-    let lista = this.artists.map(artist => artist.getAlbums());
-    let lenght = lista.length;
-    let listaFinal = oncat();
+    let emptyList = [];
+    let albums = this.artists.map(artist => artist.getAlbums());
+    while(!albums === []){
+      emptyList = emptyList + (albums.shift());
+    }
+    return emptyList;
   }
 
   getArtists()
