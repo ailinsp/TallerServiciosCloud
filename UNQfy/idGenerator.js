@@ -10,22 +10,24 @@ class IdGenerator
     getIdTracks()
     {
         let id = this.idTracks;
-        idTracks++; 
+        this.idTracks++; 
         return id;
     }
 
     getIdAlbums()
     {
         let id = this.idAlbum;
-        idAlbum++; 
+        this.idAlbum++; 
         return id;
     }
 
     getIdArtist()
     {
         let id = this.idArtist;
-        idArtist++; 
+        this.idArtist++; 
         return id;
     }
 
 }
+
+module.exports = IdGenerator;

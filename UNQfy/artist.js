@@ -1,11 +1,9 @@
-const album = require('./album.js');
-let id2 = 0;
+const Album = require('./album.js');
 
 class Artist {
     
-    constructor(name,country) {
-        id2++;
-        this.id = id2;
+    constructor(id, name, country) {
+        this.id = id;
         this.name = name;
        // this.year = new Date();
         this.country = country;

@@ -1,11 +1,11 @@
 const Track = require('./track.js');
-let id2 = 0;
+const IdGenerator = require('./idGenerator.js');
+
 
 class Album {
 
     constructor(name,year){
-        id2++;
-        this.id = id2;
+        this.id = IdGenerator.getIdAlbums();
         this.year = year;
         this.name = name;
         this.tracks = [];

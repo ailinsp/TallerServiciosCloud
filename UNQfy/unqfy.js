@@ -4,6 +4,8 @@ const Track = require('./track.js');
 const PlayList = require('./playList.js');
 const Artist = require('./artist.js');
 const Album = require('./album.js');
+const IdGenerator = require('./idGenerator.js');
+
 
 class UNQfy {
 
@@ -11,6 +13,7 @@ class UNQfy {
   {
     this.artists = [];
     this.playlists = [];
+    this.idGenerator = new IdGenerator();
   }
 
   getAllAlbums(){
@@ -45,7 +48,7 @@ class UNQfy {
     - una propiedad country (string)
   */
     //let {name,country} = artistData;
-    let newArtist = new Artist(artistData.name,artistData.country);
+    let newArtist = new Artist(this.idGenerator.getIdArtist(),artistData.name,artistData.country);
     this.artists.push(newArtist);
     return newArtist;
   }
@@ -291,7 +294,7 @@ class UNQfy {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy, Track, PlayList, Artist, Album];
+    const classes = [UNQfy, Track, PlayList, Artist, Album, IdGenerator];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
 }
