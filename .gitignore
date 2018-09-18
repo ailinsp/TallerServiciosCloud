@@ -61,10 +61,15 @@ yarn-error.log*
 # Dependency directories
 node_modules/
 node_modules/*
+UNQfy/node_modules/*
 jspm_packages/
 
 package-lock.json
 package.json
+./package-lock.json
+./package.json
+./UNQfy/package-lock.json
+./UNQfy/package.json
 
 # Optional eslint cache
 .eslintcache
