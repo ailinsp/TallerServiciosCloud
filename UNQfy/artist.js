@@ -16,7 +16,7 @@ class Artist {
     return this.name === name;
   }
 
-  isId(id){
+  hasId(id){
     return this.id === id;
   }
 

@@ -3,9 +3,10 @@ let id2 = 0;
 
 class Album {
 
-    constructor(name){
+    constructor(name,year){
         id2++;
         this.id = id2;
+        this.year = year;
         this.name = name;
         this.tracks = [];
     }
