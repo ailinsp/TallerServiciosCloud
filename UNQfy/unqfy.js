@@ -13,6 +13,12 @@ class UNQfy {
     this.playlists = [];
   }
 
+  getAllAlbums(){
+    let lista = this.artists.map(artist => artist.getAlbums());
+    let lenght = lista.length;
+    let listaFinal = oncat();
+  }
+
   getArtists()
   {
     return this.artists;
@@ -149,7 +155,7 @@ class UNQfy {
   // retorna: El artista con la id, si no existe muestra el error.
   getArtistById(id) 
   {
-    let result = this.artists.find(artista => artista.isId(id))
+    let result = this.getArtists().find(artista => artista.hasId(id))
     if (result === undefined)
     {
       throw new Error("No se encontro un artista con la identificacion: " + id);
@@ -157,16 +163,10 @@ class UNQfy {
     return result;
   }
 
-  // retorna: Una lista con todos los albums de los artistas
-  getAllAlbums()
-  {
-    return this.getArtists().map(artist => artist.getAlbums());
-  }
-
   // retorna: el album con la id, si no existe muestra el error.
   getAlbumById(id) 
   {
-    let result = this.getAllAlbums().find(album => album.hasId(id));
+    let result = this.getAllAlbums().find(album => album.isId(id));
     if (result === undefined)
     {
       throw new Error("No existe un album con la identificacion: " + id)
