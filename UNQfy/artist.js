@@ -2,7 +2,7 @@ const album = require('./album.js');
 
 class Artist {
     
-    constructor() {
+    constructor(name, country) {
         this.id = id;
         this.name = name;
         this.year = year;

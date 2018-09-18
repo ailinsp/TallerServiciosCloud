@@ -27,7 +27,7 @@ class UNQfy {
   //   artistData.name (string)
   //   artistData.country (string)
   // retorna: el nuevo artista creado
-  addArtist(artistData) 
+  addArtist(name,country) 
   {
   // Crea un artista y lo agrega a unqfy.
   /*
@@ -35,7 +35,7 @@ class UNQfy {
     - una propiedad name (string)
     - una propiedad country (string)
   */
-    let newArtist = new Artist(artistData.name, artistData.country);
+    let newArtist = new Artist(name, country);
     artists.push(newArtist);
     return newArtist;
   }
@@ -288,13 +288,13 @@ class UNQfy {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy];
+    const classes = [UNQfy, track, playList, artist, album];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
 }
 
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
 module.exports = {
-  UNQfy, track, playList, artist, album
+  UNQfy,
 };
 

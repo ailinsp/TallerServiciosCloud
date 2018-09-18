@@ -16,14 +16,45 @@ function saveUNQfy(unqfy, filename = 'data.json') {
   unqfy.save(filename);
 }
 
+//dar de alta
+function addArtist(unqfy, params) {
+  unqfy.addArtist(params);
+  console.log("Artist successfully added.");
+}
+
+function addTrack(unqfy, params) {
+  unqfy.addTrack(params);
+  console.log("Track successfully added."); 
+}
+
+function addAlbum(unqfy, params) {
+  unqfy.addAlbum(params);
+  console.log("Album successfully added.");
+}
+//dar de baja
+function removeArtist(unqfy, params) {
+  unqfy.removeArtist(params);
+  console.log("Artist successfully removed.");
+}
+
+function removeTrack(unqfy, params) {
+  unqfy.addTrack(params);
+  console.log("Track successfully removed."); 
+}
+
+function removeAlbum(unqfy, params) {
+  unqfy.removeAlbum(params);
+  console.log("Album successfully removed.");
+}
+///////////
 /*
  En esta funcion deberán interpretar los argumentos pasado por linea de comandos
  e implementar los diferentes comandos.
 
   Se deberán implementar los comandos:
-    - Alta y baja de Artista
-    - Alta y Baja de Albums
-    - Alta y Baja de tracks
+    - Alta y baja de Artista DONE
+    - Alta y Baja de Albums  DONE
+    - Alta y Baja de tracks  DONE
 
     - Listar todos los Artistas
     - Listar todos los albumes de un artista
