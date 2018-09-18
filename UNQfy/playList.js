@@ -50,3 +50,5 @@ class Playlist{
        return this.tracks;
      }
 }
+
+module.exports = Playlist;

@@ -78,6 +78,7 @@ function removeAlbum(unqfy, params) {
 */
 
 function main() {
+  
   console.log('arguments: ');
   process.argv.forEach(argument => console.log(argument));
 }

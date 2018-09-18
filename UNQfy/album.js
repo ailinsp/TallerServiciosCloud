@@ -1,6 +1,11 @@
+const Track = require('./track.js');
+let id2 = 0;
+
 class Album {
 
-    constructor(){
+    constructor(name){
+        id2++;
+        this.id = id2;
         this.name = name;
         this.tracks = [];
     }
@@ -27,7 +32,11 @@ class Album {
     } 
     
     hasName(albumName){
-        return this.hasAttribute("albumName")   
+        return this.name === albumName;   
+    }
+
+    hasId(albumId){
+        return this.id === albumId;    
     }
     
     getTracks(){
@@ -37,3 +46,6 @@ class Album {
         return this.name;
     }
 }
+
+module.exports = Album;
+

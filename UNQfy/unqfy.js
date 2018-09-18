@@ -1,9 +1,9 @@
 const picklify = require('picklify'); // para cargar/guarfar unqfy
 const fs = require('fs'); // para cargar/guarfar unqfy
-const track = require('./track.js');
-const playList = require('./playList.js');
-const artist = require('./artist.js');
-const album = require('./album.js');
+const Track = require('./track.js');
+const PlayList = require('./playList.js');
+const Artist = require('./artist.js');
+const Album = require('./album.js');
 
 class UNQfy {
 
@@ -13,12 +13,12 @@ class UNQfy {
     this.playlists = [];
   }
 
-  get getArtists()
+  getArtists()
   {
     return this.artists;
   }
 
-  get getPlaylist()
+  getPlaylist()
   {
     return this.playlists;
   }
@@ -27,7 +27,7 @@ class UNQfy {
   //   artistData.name (string)
   //   artistData.country (string)
   // retorna: el nuevo artista creado
-  addArtist(name,country) 
+  addArtist(artistData) 
   {
   // Crea un artista y lo agrega a unqfy.
   /*
@@ -35,8 +35,9 @@ class UNQfy {
     - una propiedad name (string)
     - una propiedad country (string)
   */
-    let newArtist = new Artist(name, country);
-    artists.push(newArtist);
+    //let {name,country} = artistData;
+    let newArtist = new Artist(artistData.name,artistData.country);
+    this.artists.push(newArtist);
     return newArtist;
   }
 
@@ -76,7 +77,6 @@ class UNQfy {
      - una propiedad year (number)
   */
     let newAlbum = new Album(albumData.name, albumData.year);
-    this.albums.push(newAlbum);
 
     this.getArtistById(artistId).addAlbum(newAlbum);
     // IMPLEMENTAR: addAlbum(album) en Artist que, dado un album, lo gregue a su lista de albums
@@ -157,21 +157,21 @@ class UNQfy {
     return result;
   }
 
+  // retorna: Una lista con todos los albums de los artistas
+  getAllAlbums()
+  {
+    return this.getArtists().map(artist => artist.getAlbums());
+  }
+
   // retorna: el album con la id, si no existe muestra el error.
   getAlbumById(id) 
   {
-    let result = getAllAlbums().find(album => album.hasId(id));
+    let result = this.getAllAlbums().find(album => album.hasId(id));
     if (result === undefined)
     {
       throw new Error("No existe un album con la identificacion: " + id)
     }
     return result;
-  }
-
-  // retorna: Una lista con todos los albums de los artistas
-  getAllAlbums()
-  {
-    return this.getArtists().map(artist => artist.getAlbums());
   }
 
 
@@ -288,13 +288,13 @@ class UNQfy {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy, track, playList, artist, album];
+    const classes = [UNQfy, Track, PlayList, Artist, Album];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
 }
 
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
 module.exports = {
-  UNQfy,
+  UNQfy, 
 };
 

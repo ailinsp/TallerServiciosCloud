@@ -1,21 +1,23 @@
 const album = require('./album.js');
+let id2 = 0;
 
 class Artist {
     
-    constructor(name, country) {
-        this.id = id;
+    constructor(name,country) {
+        id2++;
+        this.id = id2;
         this.name = name;
-        this.year = year;
+       // this.year = new Date();
         this.country = country;
         this.albums = [];
     }
 
   isArtist(name){
-    return this.hasAttribute("name")
+    return this.name === name;
   }
 
-  isId(){
-    return this.hasAttribute("id")
+  isId(id){
+    return this.id === id;
   }
 
   addAlbum(album){
@@ -40,3 +42,5 @@ class Artist {
   }
 
 }
+
+module.exports = Artist;
