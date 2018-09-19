@@ -5,7 +5,7 @@ const PlayList = require('./playList.js');
 const Artist = require('./artist.js');
 const Album = require('./album.js');
 const IdGenerator = require('./idGenerator.js');
-
+var ids = 0;
 
 class UNQfy {
 
@@ -13,16 +13,20 @@ class UNQfy {
   {
     this.artists = [];
     this.playlists = [];
-    this.idGenerator = new IdGenerator();
+    //this.idGenerator = new IdGenerator();
   }
 
   getAllAlbums(){
-    let albumsList = [];
+    let result = [];
     let albums = this.artists.map(artist => artist.getAlbums());
-    while(!albums === []){
-      albumsList = albumsList + (albums.shift());
+    albums.forEach(listAlbums => result.concat(listAlbums));
+    /*
+    while(!albums === [])
+    {
+      albumsList = albumsList + albums.pop();
     }
-    return albumsList;
+    */
+    return result;
   }
 
   getArtists()
@@ -47,8 +51,8 @@ class UNQfy {
     - una propiedad name (string)
     - una propiedad country (string)
   */
-    //let {name,country} = artistData;
-    let newArtist = new Artist(this.idGenerator.getIdArtist(),artistData.name,artistData.country);
+    let newArtist = new Artist(ids,artistData.name,artistData.country);
+    ids++;
     this.artists.push(newArtist);
     return newArtist;
   }
@@ -88,8 +92,8 @@ class UNQfy {
      - una propiedad name (string)
      - una propiedad year (number)
   */
-    let newAlbum = new Album(this.idGenerator.getIdAlbums(), albumData.name, albumData.year);
-
+    let newAlbum = new Album(ids, albumData.name, albumData.year);
+    ids++;
     this.getArtistById(artistId).addAlbum(newAlbum);
     // IMPLEMENTAR: addAlbum(album) en Artist que, dado un album, lo gregue a su lista de albums
     return newAlbum;
@@ -117,15 +121,17 @@ class UNQfy {
   //   trackData.duration (number)
   //   trackData.genres (lista de strings)
   // retorna: el nuevo track creado
-  addTrack(albumId, trackData) {
+  addTrack(albumId, trackData) 
+  {
   /* Crea un track y lo agrega al album con id albumId.
   El objeto track creado debe tener (al menos):
       - una propiedad name (string),
       - una propiedad duration (number),
       - una propiedad genres (lista de strings)
   */
-    let newTrack = new Track(this.idGenerator.getIdTracks(), trackData.name, trackData.maxDuration, trackData.genres);
-    this.getAlbumById(albumId).addTrack(newTrack);
+    let newTrack = new Track(ids, trackData.name, trackData.duration, trackData.genres);
+    ids++;
+    this.getAlbumById(albumId).addNewTrack(newTrack);
     return newTrack;
   }
 
@@ -200,7 +206,7 @@ class UNQfy {
     let tracks = this.getAllAlbums().map(album => album.getTracks());
     while(!tracks === [])
     {
-      tracksList = tracksList + (tracks.shift());
+      tracksList = tracksList + (tracks.pop());
     }
     return tracksList;
   }

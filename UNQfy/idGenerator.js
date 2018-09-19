@@ -1,9 +1,9 @@
 class IdGenerator
 {
     constructor(){
-        this.idTracks = 0;
-        this.idAlbum = 0;
-        this.idArtist = 0;
+        this.idTracks = 1;
+        this.idAlbum = 1;
+        this.idArtist = 1;
     }
 
     // retorna: un id para los albums

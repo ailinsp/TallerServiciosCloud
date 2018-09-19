@@ -11,7 +11,7 @@ class Album {
         this.tracks = [];
     }
 
-    addTrack(track){
+    addNewTrack(track){
         this.tracks.push(track);
     }
 
@@ -36,7 +36,7 @@ class Album {
     }
 
     isId(albumId){
-        return this.id === albumId;    
+        return this.id == albumId;    
     }
     
     getTracks(){
