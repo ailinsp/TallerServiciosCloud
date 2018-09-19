@@ -4,8 +4,8 @@ const IdGenerator = require('./idGenerator.js');
 
 class Album {
 
-    constructor(name,year){
-        this.id = IdGenerator.getIdAlbums();
+    constructor(id, name,year){
+        this.id = id;
         this.year = year;
         this.name = name;
         this.tracks = [];

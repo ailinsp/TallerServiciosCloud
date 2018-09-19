@@ -2,10 +2,10 @@
 
 const assert = require('chai').assert;
 const libunqfy = require('./unqfy');
-const track = require('./track.js');
-const playList = require('./playList.js');
-const artist = require('./artist.js');
-const album = require('./album.js');
+const Track = require('./track.js');
+const PlayList = require('./playList.js');
+const Artist = require('./artist.js');
+const Album = require('./album.js');
 
 function createAndAddArtist(unqfy, artistName, country) {
   const artist = unqfy.addArtist({ name: artistName, country });

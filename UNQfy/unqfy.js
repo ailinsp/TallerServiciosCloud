@@ -17,12 +17,12 @@ class UNQfy {
   }
 
   getAllAlbums(){
-    let emptyList = [];
+    let albumsList = [];
     let albums = this.artists.map(artist => artist.getAlbums());
     while(!albums === []){
-      emptyList = emptyList + (albums.shift());
+      albumsList = albumsList + (albums.shift());
     }
-    return emptyList;
+    return albumsList;
   }
 
   getArtists()
@@ -88,7 +88,7 @@ class UNQfy {
      - una propiedad name (string)
      - una propiedad year (number)
   */
-    let newAlbum = new Album(albumData.name, albumData.year);
+    let newAlbum = new Album(this.idGenerator.getIdAlbums(), albumData.name, albumData.year);
 
     this.getArtistById(artistId).addAlbum(newAlbum);
     // IMPLEMENTAR: addAlbum(album) en Artist que, dado un album, lo gregue a su lista de albums
@@ -124,7 +124,7 @@ class UNQfy {
       - una propiedad duration (number),
       - una propiedad genres (lista de strings)
   */
-    let newTrack = new Track(trackData.name, trackData.maxDuration, trackData.genres);
+    let newTrack = new Track(this.idGenerator.getIdTracks(), trackData.name, trackData.maxDuration, trackData.genres);
     this.getAlbumById(albumId).addTrack(newTrack);
     return newTrack;
   }
@@ -195,7 +195,13 @@ class UNQfy {
   // retorna: Una lista con todos los tracks de los albumes
   getAllTracks()
   {
-    return this.getAllAlbums().map(album => album.getTracks());
+    let tracksList = [];
+    let tracks = this.getAllAlbums().map(album => album.getTracks());
+    while(!tracks === [])
+    {
+      tracksList = tracksList + (tracks.shift());
+    }
+    return tracksList;
   }
 
   // retorna: La playlist con identificacion id, si no existe muestro el error.
