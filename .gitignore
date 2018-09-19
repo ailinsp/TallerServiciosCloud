@@ -63,6 +63,7 @@ node_modules/
 node_modules/*
 
 UNQfy/node_modules
+./UNQfy/node_modules/
 UNQfy/node_modules/
 UNQfy/node_modules/*
 jspm_packages/
