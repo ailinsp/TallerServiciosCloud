@@ -125,7 +125,7 @@ class UNQfy {
       - una propiedad genres (lista de strings)
   */
     let newTrack = new Track(this.idGenerator.getIdTracks(), trackData.name, trackData.maxDuration, trackData.genres);
-    this.findAlbum(albumId).addTrack(newTrack);
+    this.getAlbumById(albumId).addTrack(newTrack);
     return newTrack;
   }
 

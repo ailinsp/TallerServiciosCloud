@@ -5,12 +5,12 @@ var duration = 0;
 var author = "";
 
 class Track{
-    constructor(id, name, duration, genres, author){
+    constructor(id, name, duration, genres){
         this.id = id;
         this.name = name;
         this.duration = duration;
         this.genres = genres;
-        this.author = author;
+        //this.author = author;
     }
 
     /*agrega un nuevo genero al Track */
@@ -37,11 +37,12 @@ class Track{
     isTrack(codigo){
       return this.id == codigo; 
     }
-
-    /*retorna bool si el artist del parametro, es el author del Track */
+    
+    /*retorna bool si el artist del parametro, es el author del Track 
     hasArtist(artist){
      return this.author == artist;
     }
+    */
 
     /*retorna un bool que corresponde si la duracion del track es menor a los "segundos" pasados por parametro*/
     hasMaxDuration(segundos){
