@@ -125,20 +125,16 @@ class UNQfy {
       - una propiedad genres (lista de strings)
   */
     let newTrack = new Track(this.idGenerator.getIdTracks(), trackData.name, trackData.maxDuration, trackData.genres);
-    this.getAlbumById(albumId).addTrack(newTrack);
+    this.findAlbum(albumId).addTrack(newTrack);
     return newTrack;
   }
+
   
   // Elimina el track trackName del album albumName
   // Además se elimina de playlists->tracks
   removeTrack(albumName, trackName)
   {
-    let album = findAlbum(albumName);
-    if (album === undefined)
-    {
-      throw new Error("No se pudo encontrar el album " + albumName);
-    }
-    let trackToRemove = album.searchTrack(trackName);
+    let trackToRemove = findAlbum(albumName).searchTrack(trackName);
     // IMPLEMENTAR: searchTrack(trackName) en Album que, dado un nombre devuelve el track con ese nombre
     //... si no lo encuentra lo informa por consola.
     this.getPlaylist.forEach(playlist => playlist.removeTrack(trackToRemove));
@@ -153,8 +149,13 @@ class UNQfy {
   // retorn: El album con el nombre name, si no existe informa el error.
   findAlbum(name)
   {
-    return this.getAllAlbums().find(album => album.hasName(name));
+    let result = this.getAllAlbums().find(album => album.hasName(name));
     // IMPLEMENTAR: hasName(albumName) en Album que, dado un nombre pregunta si le pertenece.
+    if (result === undefined)
+    {
+      throw new Error("No se encontro el album con el nombre: " + name);
+    }
+    return reault;
   }
 
 
@@ -277,12 +278,7 @@ class UNQfy {
   // retorna: los tracks del album name
   getTracksByAlbum(name)
   {
-    let album = this.findAlbum(name);
-    if (album === undefined)
-    {
-      throw new Error("No se enconto el album con el nombre: " + name);
-    }
-    return album.getTracks();
+    return this.findAlbum(name).getTracks();
     // IMPLEMENTAR: getTracks() en Albums que retorna sus tracks
   }
 
