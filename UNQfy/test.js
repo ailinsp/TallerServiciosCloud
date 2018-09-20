@@ -21,7 +21,6 @@ function createAndAddTrack(unqfy, albumName, trackName, trackDuraction, trackGen
   return unqfy.addTrack(albumName, { name: trackName, duration: trackDuraction, genres: trackGenres });
 }
 
-
 describe('Add, remove and filter data', () => {
   let unqfy = null;
 
@@ -120,7 +119,7 @@ describe('Add, remove and filter data', () => {
   });
 });
 
-describe('Playlist Creation and properties', () => {
+ describe('Playlist Creation and properties', () => {
   let unqfy = null;
 
   beforeEach(() => {
