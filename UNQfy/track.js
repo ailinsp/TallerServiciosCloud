@@ -1,8 +1,8 @@
-var genres = [];
-var id = 0;
-var name = "";
-var duration = 0;
-var author = "";
+let genres = [];
+let id = 0;
+let name = "";
+let duration = 0;
+let author = "";
 
 class Track{
     constructor(id, name, duration, genres){
@@ -48,7 +48,20 @@ class Track{
     hasMaxDuration(segundos){
       return this.duration < segundos;
     }
+
+    isPartOfName(nameTrack){
+      return this.name.includes(nameTrack);
+    }
+
+    hasAnyGenre(genresL){
+      for (let i=0;i < genresL.lenght; i++){
+        if(this.hasGenre(genresL[i])){
+          return true;
+        }
+      }
+    }
 }
+
 
 
 module.exports = Track;

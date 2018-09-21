@@ -1,8 +1,8 @@
 /*                                                PlayList                                                             */ 
 const track = require('./track.js');
 
-var tracks= [];
-var namePlayList = "";
+let tracks= [];
+let namePlayList = "";
 
 class Playlist{
     constructor (namePlayList, tracks){
@@ -49,6 +49,12 @@ class Playlist{
      getTracks(){
        return this.tracks;
      }
+
+     isPartOfName(name){
+      return this.namePlayList.includes(name);
+    }
 }
+
+
 
 module.exports = Playlist;

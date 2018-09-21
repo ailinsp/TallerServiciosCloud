@@ -5,7 +5,7 @@ const PlayList = require('./playList.js');
 const Artist = require('./artist.js');
 const Album = require('./album.js');
 const IdGenerator = require('./idGenerator.js');
-var ids = 0;
+let ids = 0;
 
 class UNQfy {
 
@@ -14,19 +14,6 @@ class UNQfy {
     this.artists = [];
     this.playlists = [];
     //this.idGenerator = new IdGenerator();
-  }
-
-  getAllAlbums(){
-    let result = [];
-    let albums = this.artists.map(artist => artist.getAlbums());
-    albums.forEach(listAlbums => result.concat(listAlbums));
-    /*
-    while(!albums === [])
-    {
-      albumsList = albumsList + albums.pop();
-    }
-    */
-    return result;
   }
 
   getArtists()
@@ -57,11 +44,18 @@ class UNQfy {
     return newArtist;
   }
 
+    // retorna: El artista con el nombre name
+  findArtist(name)
+  {
+    return this.getArtists().find(artist => artist.isArtist(name));
+    // IMPLEMENTAR: isArtist en Artist
+    // artist.hasName(name)
+  }
   // Elimina el artista con el nombre name, si el artista no existe informa el error ocurrido.
   // 
   removeArtist(name)
   {
-    let artistToRemove = findArtist(name);
+    let artistToRemove = this.findArtist(name);
     if (artistToRemove === undefined) // Si artistToRemove no se encontró...
     {
       throw new Error("No se encontró el artista " + name);
@@ -74,13 +68,7 @@ class UNQfy {
     console.log("El artista " + name + " ha sido eliminado con exito.");
   }
 
-  // retorna: El artista con el nombre name
-  findArtist(name)
-  {
-    return this.getArtists().find(artist => artist.isArtist(name));
-    // IMPLEMENTAR: isArtist en Artist
-    // artist.hasName(name)
-  }
+
 
   // albumData: objeto JS con los datos necesarios para crear un album
   //   albumData.name (string)
@@ -103,8 +91,8 @@ class UNQfy {
   // Si artista o el album no existen se informa el error ocurrido
   removeAlbum (artistName, albumName)
   {
-    let artist = this.findArtist(artisName);
-    if (artist == undefined)
+    let artist = this.findArtist(artistName);
+    if (artist === undefined)
     {
       throw new Error("No se pudo encontrar al artista " + artistName);
     }
@@ -113,6 +101,25 @@ class UNQfy {
     // ... si el album name no se encuentra, lanza un error.
     this.getPlaylist().forEach(playlist => playlist.filterTracks(this.getTracksByAlbum(albumName)));
     console.log("Se ha eliminado el album " + albumName + " con exito.");
+  }
+
+  getAllAlbums(){
+    
+    let albums = this.artists.map(artist => artist.getAlbums());
+    let resultFinal= [];
+    let result = [].concat(albums);
+
+    return resultFinal= [].concat.apply([], result);
+  }
+  // retorna: el album con la id, si no existe muestra el error.
+  getAlbumById(id) 
+  {
+    let result = this.getAllAlbums().find(album => album.isId(id));
+    if (result === undefined)
+    {
+      throw new Error("No existe un album con la identificacion: " + id);
+    }
+    return result;
   }
 
 
@@ -140,7 +147,7 @@ class UNQfy {
   // Además se elimina de playlists->tracks
   removeTrack(albumName, trackName)
   {
-    let trackToRemove = findAlbum(albumName).searchTrack(trackName);
+    let trackToRemove = this.findAlbum(albumName).searchTrack(trackName);
     // IMPLEMENTAR: searchTrack(trackName) en Album que, dado un nombre devuelve el track con ese nombre
     //... si no lo encuentra lo informa por consola.
     this.getPlaylist.forEach(playlist => playlist.removeTrack(trackToRemove));
@@ -161,14 +168,14 @@ class UNQfy {
     {
       throw new Error("No se encontro el album con el nombre: " + name);
     }
-    return reault;
+    return result;
   }
 
 
   // retorna: El artista con la id, si no existe muestra el error.
   getArtistById(id) 
   {
-    let result = this.getArtists().find(artista => artista.hasId(id))
+    let result = this.getArtists().find(artista => artista.hasId(id));
     if (result === undefined)
     {
       throw new Error("No se encontro un artista con la identificacion: " + id);
@@ -176,39 +183,27 @@ class UNQfy {
     return result;
   }
 
-  // retorna: el album con la id, si no existe muestra el error.
-  getAlbumById(id) 
-  {
-    let result = this.getAllAlbums().find(album => album.isId(id));
-    if (result === undefined)
-    {
-      throw new Error("No existe un album con la identificacion: " + id)
-    }
-    return result;
-  }
-
-
   // retorna: El track con la identificacion id, si no existe muestra el error.
   getTrackById(id) 
   {
-    let result = this.getAllTracks().find(track => track.isTrack(id))
+    let result = this.getAllTracks().find(track => track.isTrack(id));
     if (result === undefined)
     {
       throw new Error("No existe un track con la identificación: " + id);
     }
+    
     return result;
   }
 
   // retorna: Una lista con todos los tracks de los albumes
   getAllTracks()
   {
-    let tracksList = [];
-    let tracks = this.getAllAlbums().map(album => album.getTracks());
-    while(!tracks === [])
-    {
-      tracksList = tracksList + (tracks.pop());
-    }
-    return tracksList;
+    let tracks = this.getAllAlbums().map(album => album.getTracksAlbum());
+    let resultAux= [];
+    let tracksList = [].concat(tracks);
+    let resultFinal= [];
+    resultAux= [].concat.apply([], tracksList)
+    return resultFinal = [].concat.apply([], resultAux);
   }
 
   // retorna: La playlist con identificacion id, si no existe muestro el error.
@@ -227,23 +222,30 @@ class UNQfy {
   // retorna: los tracks que contenga alguno de los generos en el parametro genres
   getTracksMatchingGenres(genres) 
   {
-    return this.getAllTracks().filter(track => track.hasAnyGenre(genres))
+    let tracks= [];
+    let listaT= this.getAllTracks();
+    for (let i=0; i < listaT.length; i++){
+      if(listaT[i].hasAnyGenre(genres)){
+        tracks.push(listaT[i]);
+      }
+    }
+    return listaT;
     // IMPLEMENTAR: hasAnyGenre([string]) en Track, donde recibe una lista de generos y...
     // pregunta si el track tiene algún género de la lista.
   }
 
   // artistName: nombre de artista(string)
   // retorna: los tracks interpredatos por el artista con nombre artistName
-  getTracksMatchingArtist(artistName) 
+  getTracksMatchingArtist(artist) 
   {
     let foundTracks = [];
-    let artist = findArtist(artistName);
-    if (! artist === undefined)
+    console.log();
+    if (this.artists.includes(artist))
     {
-      foundTracks = artist.getTracks();
+      return artist.getTracks();
       // IMPLEMENTAR: getTracks() en Artist que retorna los tracks pertenecientes al artista.
     }
-    return foundTracks;
+    return this.getTracksByAlbum(this.getAlbumByArtist(artist.name).name);
   }
 
 
@@ -259,10 +261,10 @@ class UNQfy {
       * un metodo duration() que retorne la duración de la playlist.
       * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
   */
-    let tracksToInlude = getTracksMatchingGenres(genresToInclude).filter(track => track.hasMaxDuration(maxDuration))
+    let tracksToInlude = this.getTracksMatchingGenres(genresToInclude).filter(track => track.hasMaxDuration(maxDuration))
     // NOTA: Falta implementar hasMaxDuration(number) en Track, que dado una duración en segundos..
     // pregunte si el track dura menos(o igual) que esos segundos.
-    let newPlaylist = new Playlist(name, tracksToInlude);
+    let newPlaylist = new PlayList(name, tracksToInlude);
     this.playlists.push(newPlaylist);
     return newPlaylist;
   }
@@ -272,7 +274,7 @@ class UNQfy {
   getAlbumByArtist(name)
   {
     let artist = this.findArtist(name);
-    if (artist === undefined)
+    if (!artist === undefined)
     {
       throw new Error("No se pudo encontrar el artista " + name);
     }
@@ -305,10 +307,25 @@ class UNQfy {
     const classes = [UNQfy, Track, PlayList, Artist, Album, IdGenerator];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
+
+  searchByName(name){
+    let tracksL= this.getAllTracks().filter(track => track.isPartOfName(name));
+    let albums= this.getAllAlbums().filter(album => album.isPartOfName(name));
+    let artists= this.getArtists().filter(artist => artist.isPartOfName(name));
+    let playListsL= this.playlists.filter(playList => playList.isPartOfName(name));
+    
+   
+    return {
+      artists: artists,
+      albums: albums,
+      tracks: tracksL,
+      playlists: playListsL,
+    };
+  }
 }
+
 
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
 module.exports = {
   UNQfy, 
 };
-

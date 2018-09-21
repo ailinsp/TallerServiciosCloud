@@ -16,7 +16,7 @@ class Album {
     }
 
     searchTrack(trackName){
-        let searchedTrack = this.getTracks().find(track => track.isTrack(trackName));
+        let searchedTrack = this.getTracksAlbum().find(track => track.isTrack(trackName));
         if (searchedTrack === undefined){
             throw new Error("No se encontro el track " + trackName);
         }     
@@ -36,15 +36,19 @@ class Album {
     }
 
     isId(albumId){
-        return this.id == albumId;    
+        return this.id === albumId;    
     }
     
-    getTracks(){
+    getTracksAlbum(){
         return this.tracks;
     }
     getName(){
         return this.name;
     }
+
+    isPartOfName(nameAlbum){
+        return this.name.includes(nameAlbum);
+      }
 }
 
 module.exports = Album;
