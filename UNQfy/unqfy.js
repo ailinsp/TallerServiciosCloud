@@ -101,9 +101,12 @@ class UNQfy {
 
   getAllTracksFromAlbums(albumList)
   {
-    return albumList.map(album => album.getTracks()).reduce((a,b) => {
+    let allTracks = albumList.map(album => album.getTracks());
+    
+    let result = allTracks.reduce((a,b) => {
       return a.concat(b);
     });
+    return result;
   }
 
   // albumData: objeto JS con los datos necesarios para crear un album
@@ -119,6 +122,7 @@ class UNQfy {
     const newAlbum = new Album(this.getId(), albumData.name, albumData.year);
     //this.ids = this.id+1;
     this.getArtistById(artistId).addAlbum(newAlbum);
+    console.log(newAlbum);
     return newAlbum;
   }
 
@@ -307,7 +311,7 @@ class UNQfy {
     }
     return this.getTracksByAlbum(this.getAlbumByArtist(artist.name).name);
     */
-    let albumsFromArtist = this.getAlbumByArtist(artist);
+    let albumsFromArtist = this.getAlbumByArtist(artist.getName());
     return this.getAllTracksFromAlbums(albumsFromArtist);
   }
 
@@ -331,8 +335,9 @@ class UNQfy {
   }
 
   // retorna: todos los albums del artista
-  getAlbumByArtist(artist)
+  getAlbumByArtist(artistName)
   {
+    let artist = this.findArtist(artistName);
     return artist.getAlbums();
   }
 

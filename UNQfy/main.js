@@ -17,6 +17,7 @@ function saveUNQfy(unqfy, filename = 'data.json') {
 }
 
 //dar de alta
+/*
 function addArtist(unqfy, params) {
   unqfy.addArtist(params);
   console.log("Artist successfully added.");
@@ -46,6 +47,7 @@ function removeAlbum(unqfy, params) {
   unqfy.removeAlbum(params);
   console.log("Album successfully removed.");
 }
+*/
 ///////////
 /*
  En esta funcion deberán interpretar los argumentos pasado por linea de comandos
@@ -81,6 +83,60 @@ function main() {
   
   console.log('arguments: ');
   process.argv.forEach(argument => console.log(argument));
+
+  const args = process.argv.slice(2);
+  if (args[0] === 'addArtist')
+  {
+    const unqfy = getUNQfy();
+    unqfy.addArtist(
+      {
+        name: args[1],
+        country: args[2],
+      }
+    );
+    saveUNQfy(unqfy);
+    console.log('Artist successfully added.');
+  }
+
+  if (args[0] === 'getArtists')
+  {
+    const unqfy = getUNQfy();
+    unqfy.getArtists();
+    console.log(unqfy.getArtists());
+    saveUNQfy(unqfy);
+  }
+  /*
+  if (args[0] === "removeArtist")
+  {
+    const unqfy = getUNQfy();
+    unqfy.removeArtist(args[1]);
+    saveUNQfy(unqfy);
+  }
+*/
+  if (args[0] === 'getAlbumByArtist')
+  {
+    const unqfy = getUNQfy();
+    unqfy.getAlbumByArtist(args[1]);
+    console.log(unqfy.getAlbumByArtist(args[1]));
+    saveUNQfy(unqfy);
+  }
+
+  /*
+  if (args[0] === 'addAlbum')
+  {
+    const unqfy = getUNQfy();
+    unqfy.addAlbum(args[1],
+      {
+        name: args[2],
+        year: args[3],
+      }
+    );
+    saveUNQfy(unqfy);
+    console.log('Album successfully added.');
+  }
+  */
+
+  
 }
 
 main();

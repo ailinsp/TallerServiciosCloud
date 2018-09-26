@@ -6,6 +6,7 @@
   "dependencies": {
     "chai": "^4.1.2",
     "picklejs": "github:lwoites/picklejs",
+    "picklify": "^1.0.1",
     "u": "^0.1.0"
   },
   "devDependencies": {
