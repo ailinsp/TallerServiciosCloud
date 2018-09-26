@@ -11,17 +11,17 @@ En este trabajo se muestra el modelo, diseño y uso de comandos de UNQfy, una ap
   
 ###  Consola de comandos:
 
-* **Agregar un nuevo artista:
+* **Agregar un nuevo artista:**
   
  ```
   node main.js addArtist _artistName _artistCountry 
  ```
-* **Ver todos los artistas agregados:
+* **Ver todos los artistas agregados:**
   
  ```
   node main.js getArtist 
  ```
-* **Ver todos los albumes de un artista:
+* **Ver todos los albumes de un artista:**
   
  ```
   node main.js getAlbumByArtist _artistId
