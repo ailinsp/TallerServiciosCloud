@@ -87,7 +87,7 @@ describe('Add, remove and filter data', () => {
 
     // assert.equal(tracks.matching.constructor.name, Array);
     assert.isArray(tracksMatching);
-    //assert.lengthOf(tracksMatching, 4);
+    assert.lengthOf(tracksMatching, 4);
     assert.equal(tracksMatching.includes(t0), true);
     assert.equal(tracksMatching.includes(t1), true);
     assert.equal(tracksMatching.includes(t2), true);

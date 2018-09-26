@@ -1,23 +1,32 @@
 /*                                                PlayList                                                             */ 
 const track = require('./track.js');
 
-let tracks= [];
-let namePlayList = "";
+// let tracks= [];
+// let namePlayList = "";
 
 class Playlist{
     constructor (namePlayList, tracks){
-        this.namePlayList= namePlayList;
+        this.name = namePlayList;
         this.tracks = tracks;
+    }
+
+    getName()
+    {
+      return this.name;
     }
     
     /*cuenta la duracion de toda la PlayList, la misma es la suma de la duracion de todo los tracks que la componen */
-    durationPlayList (){
+    duration(){
+      /*
     let count= this.tracks.length;
     let durationPL = 0;
     for(let i=0; i < count;i++) {
         durationPL += this.tracks[i].duration;
     }
     return durationPL;
+    */
+    let times = this.getTracks().map(track => track.getDuration());
+    return times.reduceRight( (a,b) => {return a + b;});
     }
     
     /*retorna bool con respecto a la PlayList que se pregunta si tiene,
@@ -32,13 +41,13 @@ class Playlist{
     
     /*track pasado como parametro se espera que sea de la clase Track */
     removeTrack(track){
-        let indexToDelete = this.tracks.indexOf(track) ;
+        let indexToDelete = this.tracks.indexOf(track);
         if(indexToDelete > -1){
             this.tracks.splice(indexToDelete,1);
         }
      }
     /*elimina a todos los tracks pasados por parametro */
-     filterTrack(trackArray){
+     filterTracks(trackArray){
        let count=trackArray.length;
         for(let i=0; i<count; i++){
           this.removeTrack(trackArray[i]);
@@ -51,7 +60,7 @@ class Playlist{
      }
 
      isPartOfName(name){
-      return this.namePlayList.includes(name);
+      return this.getName().includes(name);
     }
 }
 

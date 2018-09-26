@@ -1,65 +1,90 @@
-let genres = [];
-let id = 0;
-let name = "";
-let duration = 0;
-let author = "";
+// const genres = [];
+// const id = 0;
+// const name = '';
+// const duration = 0;
+// const author = '';
 
 class Track{
-    constructor(id, name, duration, genres){
-        this.id = id;
-        this.name = name;
-        this.duration = duration;
-        this.genres = genres;
-        //this.author = author;
-    }
+  constructor(id, name, duration, genres){
+    this.id = id;
+    this.name = name;
+    this.duration = duration;
+    this.genres = genres;
+  }
 
-    /*agrega un nuevo genero al Track */
-    addGenre(newGenre){
-      if(this.genres.indexOf(newGenre) == -1){
-        this.genres.push(newGenre);
-      }
-    }
+  getName()
+  {
+    return this.name;
+  }
 
-    /*elimina el genero pasado como parametro como genreToDelete */
-    removeGenre(genreToDelete){
-    let indexToDelete = this.genres.indexOf(genreToDelete) ;
-      if(indexToDelete > -1){
-        this.genres.splice(indexToDelete,1);
-      }
-    } 
+  getDuration()
+  {
+    return this.duration;
+  }
 
-    /*retorna si el genero existe en el track*/
-    hasGenre(genre){
-      return this.genres.includes(genre);
-    }
+  getGenres()
+  {
+    return this.genres;
+  }
 
-    /*retorna si el codigo que se pasa, pertenece al Id de la clase Track en el que se invoca */
-    isTrack(codigo){
-      return this.id == codigo; 
+  /*agrega un nuevo genero al Track */
+  addGenre(newGenre){
+    if(this.genres.indexOf(newGenre) == -1){
+      this.genres.push(newGenre);
     }
+  }
+
+  /*elimina el genero pasado como parametro como genreToDelete */
+  removeGenre(genreToDelete){
+    const indexToDelete = this.genres.indexOf(genreToDelete) ;
+    if(indexToDelete > -1){
+      this.genres.splice(indexToDelete,1);
+    }
+  } 
+
+  /*retorna si el genero existe en el track*/
+  hasGenre(genre){
+    //console.log(this.getGenres().includes(genre));
+    return this.getGenres().includes(genre);
+  }
+
+  /*retorna si el codigo que se pasa, pertenece al Id de la clase Track en el que se invoca */
+  isTrack(codigo){
+    return this.id == codigo; 
+  }
     
-    /*retorna bool si el artist del parametro, es el author del Track 
+  /*retorna bool si el artist del parametro, es el author del Track 
     hasArtist(artist){
      return this.author == artist;
     }
     */
 
-    /*retorna un bool que corresponde si la duracion del track es menor a los "segundos" pasados por parametro*/
-    hasMaxDuration(segundos){
-      return this.duration < segundos;
-    }
+  /*retorna un bool que corresponde si la duracion del track es menor a los "segundos" pasados por parametro*/
+  hasMaxDuration(segundos){
+    return this.duration <= segundos;
+  }
 
-    isPartOfName(nameTrack){
-      return this.name.includes(nameTrack);
-    }
+  isPartOfName(nameTrack){
+    return this.getName().includes(nameTrack);
+  }
 
-    hasAnyGenre(genresL){
-      for (let i=0;i < genresL.lenght; i++){
-        if(this.hasGenre(genresL[i])){
-          return true;
-        }
+  hasAnyGenre(genresL){
+    /*
+    for (let i=0;i < genresL.lenght; i++){
+      if(this.hasGenre(genresL[i])){
+        return true;
       }
     }
+    */
+    let result = genresL.filter(genre => this.hasGenre(genre));
+    let cant = 0;
+    result.forEach(element => {
+      cant++;
+    });
+    // result no reconoce la propiedad lenght
+    // return result.lenght > 0; 
+    return (cant > 0);
+  }
 }
 
 

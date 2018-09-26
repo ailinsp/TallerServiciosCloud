@@ -11,25 +11,41 @@ class Album {
         this.tracks = [];
     }
 
+    getId()
+    {
+        return this.id;
+    }
+
     addNewTrack(track){
         this.tracks.push(track);
     }
 
     searchTrack(trackName){
-        let searchedTrack = this.getTracksAlbum().find(track => track.isTrack(trackName));
+        let searchedTrack = this.getTracks().find(track => track.isTrack(trackName));
         if (searchedTrack === undefined){
             throw new Error("No se encontro el track " + trackName);
         }     
         return searchedTrack;
     }
-
+    /*
     removeTrack(trackName){
         let removedTrack = this.searchTrack(trackName);
         if (removedTrack === undefined){
             throw new Error("No se encontro el track " + trackName);
         }   
-        tracks.splice(tracks.findIndex(track => track.getId === removedTrack.getId), 1);
+        this.tracks.splice(this.tracks.findIndex(track => track.getId === removedTrack.getId), 1);
     } 
+    */
+
+    removeTrack(trackToRemove)
+    {
+        let index = this.tracks.indexOf(trackToRemove);
+        if (index < 0)
+        {
+            throw new Error("El album " + this.getName() + " no posee el track " + trackToRemove.getName());
+        }
+        this.tracks.splice(index,1);
+    }
     
     hasName(albumName){
         return this.name === albumName;   
@@ -39,7 +55,7 @@ class Album {
         return this.id === albumId;    
     }
     
-    getTracksAlbum(){
+    getTracks(){
         return this.tracks;
     }
     getName(){
@@ -47,7 +63,7 @@ class Album {
     }
 
     isPartOfName(nameAlbum){
-        return this.name.includes(nameAlbum);
+        return this.getName().includes(nameAlbum);
       }
 }
 
