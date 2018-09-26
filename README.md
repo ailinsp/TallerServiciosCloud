@@ -9,7 +9,7 @@ En este trabajo se muestra el modelo, diseño y uso de comandos de UNQfy, una ap
 
 <r>
   
-###  Consola de comandos:
+###  Comandos disponiles en consola:
 
 * **Agregar un nuevo artista:**
   
