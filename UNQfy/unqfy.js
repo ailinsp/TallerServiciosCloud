@@ -1,10 +1,10 @@
+
 const picklify = require('picklify'); // para cargar/guarfar unqfy
 const fs = require('fs'); // para cargar/guarfar unqfy
 const Track = require('./track.js');
 const PlayList = require('./playList.js');
 const Artist = require('./artist.js');
 const Album = require('./album.js');
-const IdGenerator = require('./idGenerator.js');
 
 class UNQfy {
 
@@ -14,18 +14,20 @@ class UNQfy {
     this.playlists = [];
     this.ids = 0;
   }
-
+  // returna: Una identificación irrepetible.
   getId()
   {
     this.ids++;
     return this.ids;
   }
 
+  // retorna: Todos los artistas.
   getArtists()
   {
     return this.artists;
   }
 
+  // retorna: Todas las playlist.
   getPlaylist()
   {
     return this.playlists;
@@ -57,12 +59,14 @@ class UNQfy {
     }
   }
 
+  // retorna: True si el artista artistToAdd se encuentra registrado.
   hasArtistToAdd(artistToAdd)
   {
     return this.getAllNameArtists().includes(artistToAdd.getName());
   }
 
-  getAllNameArtists() 
+  // retorna: todos los nombres de los artistas.
+  getAllNameArtists()
   {
     return this.artists.map(artist => artist.getName());
   }
@@ -94,19 +98,18 @@ class UNQfy {
     console.log('El artista ' + name + ' ha sido eliminado con exito.');
   }
 
+  // Elimina un track de todas las playlist.
   removeTracksFromPlaylists(tracksToRemove) 
   {
     this.getPlaylist().forEach(pl => pl.filterTracks(tracksToRemove));
   }
 
+  // retorna: todos los tracks de los albums albumList.
   getAllTracksFromAlbums(albumList)
   {
-    let allTracks = albumList.map(album => album.getTracks());
-    
-    let result = allTracks.reduce((a,b) => {
-      return a.concat(b);
-    });
-    return result;
+    // [].concat.aply([], Array.map(lambda)) -> Simula un flatmap
+    let allTracks = [].concat.apply([], albumList.map(album => album.getTracks())); 
+    return allTracks;
   }
 
   // albumData: objeto JS con los datos necesarios para crear un album
@@ -120,9 +123,8 @@ class UNQfy {
      - una propiedad year (number)
   */
     const newAlbum = new Album(this.getId(), albumData.name, albumData.year);
-    //this.ids = this.id+1;
     this.getArtistById(artistId).addAlbum(newAlbum);
-    console.log(newAlbum);
+    console.log(newAlbum + "artista con id: " + artistId);
     return newAlbum;
   }
 
@@ -145,11 +147,13 @@ class UNQfy {
     console.log('Se ha eliminado el album ' + albumToRemove.getName() + ' del artista ' + artist.getName() + ' con exito.');
   }
 
+  // return: el album de nombre albumName del artista artist.
   getAlbumFromArtist(artist, albumName)
   {
     return artist.getAlbums().find(album => album.hasName(albumName));
   }
 
+  // retorna: todos los albumes de todos los artistas.
   getAllAlbums()
   {  
     const albumsList = this.artists.map(artist => artist.getAlbums());
@@ -176,7 +180,6 @@ class UNQfy {
     }
     return result;
   }
-
 
   // trackData: objeto JS con los datos necesarios para crear un track
   //   trackData.name (string)
@@ -231,6 +234,7 @@ class UNQfy {
   getArtistById(id) 
   {
     const result = this.getArtists().find(artista => artista.hasId(id));
+    
     if (result === undefined)
     {
       throw new Error('No se encontro un artista con la identificacion: ' + id);
@@ -348,13 +352,14 @@ class UNQfy {
     return this.findAlbum(name).getTracks();
   }
 
-  searchByName(name){
-    let tracksL= this.getAllTracks().filter(track => track.isPartOfName(name));
-    let albums= this.getAllAlbums().filter(album => album.isPartOfName(name));
-    let artists= this.artists.filter(artist => artist.isPartOfName(name));
-    let playListsL= this.playlists.filter(playList => playList.isPartOfName(name));
+  // retorna: todos los tracks, albums, artistas y playlista cuyos nombres macheen con name.
+  searchByName(name)
+  {
+    let tracksL = this.getAllTracks().filter(track => track.isPartOfName(name));
+    let albums = this.getAllAlbums().filter(album => album.isPartOfName(name));
+    let artists = this.artists.filter(artist => artist.isPartOfName(name));
+    let playListsL = this.playlists.filter(playList => playList.isPartOfName(name));
     
-   
     return {
       artists: artists,
       albums: albums,
@@ -362,6 +367,7 @@ class UNQfy {
       playlists: playListsL,
     };
   }
+
 
   save(filename) 
   {
@@ -377,11 +383,10 @@ class UNQfy {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy, Track, PlayList, Artist, Album, IdGenerator];
+    const classes = [UNQfy, Track, PlayList, Artist, Album];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
 }
-
 
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
 module.exports = {

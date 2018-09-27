@@ -105,14 +105,14 @@ function main() {
     console.log(unqfy.getArtists());
     saveUNQfy(unqfy);
   }
-  /*
+  
   if (args[0] === "removeArtist")
   {
     const unqfy = getUNQfy();
     unqfy.removeArtist(args[1]);
     saveUNQfy(unqfy);
   }
-*/
+
   if (args[0] === 'getAlbumByArtist')
   {
     const unqfy = getUNQfy();
@@ -120,7 +120,6 @@ function main() {
     console.log(unqfy.getAlbumByArtist(args[1]));
     saveUNQfy(unqfy);
   }
-
   /*
   if (args[0] === 'addAlbum')
   {
@@ -135,8 +134,6 @@ function main() {
     console.log('Album successfully added.');
   }
   */
-
-  
 }
 
 main();
