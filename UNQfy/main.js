@@ -120,20 +120,28 @@ function main() {
     console.log(unqfy.getAlbumByArtist(args[1]));
     saveUNQfy(unqfy);
   }
-  /*
+
   if (args[0] === 'addAlbum')
   {
     const unqfy = getUNQfy();
     unqfy.addAlbum(args[1],
-      {
-        name: args[2],
-        year: args[3],
+  {
+     name: args[2],
+ year: args[3],
       }
     );
     saveUNQfy(unqfy);
     console.log('Album successfully added.');
   }
-  */
+
+  if (args[0] === 'createPlaylist')
+  {
+    const unqfy = getUNQfy();
+    unqfy.createPlaylist(args[1], args[2], args[3]);
+    saveUNQfy(unqfy);
+    console.log(unqfy.createPlaylist(args[1], args[2], args[3]));
+  }
+
 }
 
 main();

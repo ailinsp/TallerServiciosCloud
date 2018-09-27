@@ -123,7 +123,7 @@ class UNQfy {
      - una propiedad year (number)
   */
     const newAlbum = new Album(this.getId(), albumData.name, albumData.year);
-    this.getArtistById(artistId).addAlbum(newAlbum);
+    this.getArtistById(parseInt(artistId)).addAlbum(newAlbum);
     console.log(newAlbum + "artista con id: " + artistId);
     return newAlbum;
   }

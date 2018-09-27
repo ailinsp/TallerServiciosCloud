@@ -1,5 +1,4 @@
 const Track = require('./track.js');
-const IdGenerator = require('./idGenerator.js');
 
 
 class Album {

@@ -6,7 +6,6 @@ const Track = require('./track.js');
 const PlayList = require('./playList.js');
 const Artist = require('./artist.js');
 const Album = require('./album.js');
-const IdGenerator = require('./idGenerator.js');
 
 function createAndAddArtist(unqfy, artistName, country) {
   const artist = unqfy.addArtist({ name: artistName, country });
