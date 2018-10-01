@@ -16,69 +16,6 @@ function saveUNQfy(unqfy, filename = 'data.json') {
   unqfy.save(filename);
 }
 
-//dar de alta
-/*
-function addArtist(unqfy, params) {
-  unqfy.addArtist(params);
-  console.log("Artist successfully added.");
-}
-
-function addTrack(unqfy, params) {
-  unqfy.addTrack(params);
-  console.log("Track successfully added."); 
-}
-
-function addAlbum(unqfy, params) {
-  unqfy.addAlbum(params);
-  console.log("Album successfully added.");
-}
-//dar de baja
-function removeArtist(unqfy, params) {
-  unqfy.removeArtist(params);
-  console.log("Artist successfully removed.");
-}
-
-function removeTrack(unqfy, params) {
-  unqfy.addTrack(params);
-  console.log("Track successfully removed."); 
-}
-
-function removeAlbum(unqfy, params) {
-  unqfy.removeAlbum(params);
-  console.log("Album successfully removed.");
-}
-*/
-///////////
-/*
- En esta funcion deberán interpretar los argumentos pasado por linea de comandos
- e implementar los diferentes comandos.
-
-  Se deberán implementar los comandos:
-    - Alta y baja de Artista DONE
-    - Alta y Baja de Albums  DONE
-    - Alta y Baja de tracks  DONE
-
-    - Listar todos los Artistas
-    - Listar todos los albumes de un artista
-    - Listar todos los tracks de un album
-
-    - Busqueda de canciones intepretadas por un determinado artista
-    - Busqueda de canciones por genero
-
-    - Dado un string, imprimmir todas las entidades (artistas, albums, tracks, playlists) que coincidan parcialmente
-    con el string pasado.
-
-    - Dada un nombre de playlist, una lista de generos y una duración máxima, crear una playlist que contenga
-    tracks que tengan canciones con esos generos y que tenga como duración máxima la pasada por parámetro.
-
-  La implementacion de los comandos deberá ser de la forma:
-   1. Obtener argumentos de linea de comando
-   2. Obtener instancia de UNQfy (getUNQFy)
-   3. Ejecutar el comando correspondiente en Unqfy
-   4. Guardar el estado de UNQfy (saveUNQfy)
-
-*/
-
 function main() {
   
   console.log('arguments: ');
@@ -98,6 +35,58 @@ function main() {
     console.log('Artist successfully added.');
   }
 
+  //dar de alta
+  if (args[0] === 'addArtist'){
+    const unqfy = getUNQfy();
+    unqfy.addArtist(args[1],{
+     name: args[2],
+     country: args[3]});
+    saveUNQfy(unqfy);
+    console.log('Artist successfully added.');
+  }
+
+  if (args[0] === 'addAlbum'){
+    const unqfy = getUNQfy();
+    unqfy.addAlbum(args[1],{
+     name: args[2],
+     year: args[3]});
+    saveUNQfy(unqfy);
+    console.log('Album successfully added.');
+  }
+
+  if (args[0] === 'addTrack'){
+    const unqfy = getUNQfy();
+    unqfy.addAlbum(args[1],{
+     name: args[2],
+     duration: args[3],
+     genres: args[4]});
+    saveUNQfy(unqfy);
+    console.log('Track successfully added.');
+  }
+  
+  //dar de baja
+  if (args[0] === "removeArtist"){
+    const unqfy = getUNQfy();
+    unqfy.removeArtist(args[1]);
+    saveUNQfy(unqfy);
+    console.log("Artist successfully removed.");
+  }
+
+  if (args[0] === "removeAlbum"){
+    const unqfy = getUNQfy();
+    unqfy.removeAlbum(args[1]);
+    saveUNQfy(unqfy);
+    console.log("Album successfully removed.");
+  }
+
+  if (args[0] === "removeTrack"){
+    const unqfy = getUNQfy();
+    unqfy.removeTrack(args[1]);
+    saveUNQfy(unqfy);
+    console.log("Track successfully removed.");
+  }
+
+  //listar todos los artistas
   if (args[0] === 'getArtists')
   {
     const unqfy = getUNQfy();
@@ -106,13 +95,7 @@ function main() {
     saveUNQfy(unqfy);
   }
   
-  if (args[0] === "removeArtist")
-  {
-    const unqfy = getUNQfy();
-    unqfy.removeArtist(args[1]);
-    saveUNQfy(unqfy);
-  }
-
+  //listar todos los albums de artista
   if (args[0] === 'getAlbumByArtist')
   {
     const unqfy = getUNQfy();
@@ -121,21 +104,42 @@ function main() {
     saveUNQfy(unqfy);
   }
 
-  if (args[0] === 'addAlbum')
-  {
+  //listar los tracks de un album
+  if (args[0] === 'getTracksByAlbum'){
     const unqfy = getUNQfy();
-    unqfy.addAlbum(args[1],
-  {
-     name: args[2],
- year: args[3],
-      }
-    );
+    unqfy.getTracksByAlbum(args[1]);
+    console.log(unqfy.getTracksByAlbum(args[1]));
     saveUNQfy(unqfy);
-    console.log('Album successfully added.');
+  }
+  
+  //Busqueda de canciones intepretadas por un determinado artista
+  if (args[0] === 'getTracksByArtist'){
+    const unqfy = getUNQfy();
+    unqfy.getTracksMatchingArtist(args[1]);
+    console.log(unqfy.getTracksMatchingArtist(args[1]));
+    saveUNQfy(unqfy);
   }
 
-  if (args[0] === 'createPlaylist')
-  {
+  //Busqueda de canciones por genero
+  if (args[0] === 'getTracksByGenres'){
+    const unqfy = getUNQfy();
+    unqfy.getTracksMatchingGenres(args[1]);
+    console.log(unqfy.getTracksMatchingGenres(args[1]));
+    saveUNQfy(unqfy);
+  }
+
+  //Dado un string, imprimmir todas las entidades (artistas, albums, tracks, playlists) que coincidan parcialmente
+  //con el string pasado.
+  if (args[0] === 'getEverythingByName'){
+    const unqfy = getUNQfy();
+    unqfy.searchByName(args[1]);
+    console.log(unqfy.searchByName(args[1]));
+    saveUNQfy(unqfy);
+  }
+
+  //Dada un nombre de playlist, una lista de generos y una duración máxima, crear una playlist que contenga
+  //tracks que tengan canciones con esos generos y que tenga como duración máxima la pasada por parámetro.
+  if (args[0] === 'createPlaylist'){
     const unqfy = getUNQfy();
     unqfy.createPlaylist(args[1], args[2], args[3]);
     saveUNQfy(unqfy);
