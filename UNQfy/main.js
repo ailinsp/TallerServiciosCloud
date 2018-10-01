@@ -39,7 +39,7 @@ function main() {
 
   if (args[0] === 'addAlbum'){
     const unqfy = getUNQfy();
-    unqfy.addTrack(args[1],{
+    unqfy.addAlbum(args[1],{
       name: args[2],
       year: args[3]});
     saveUNQfy(unqfy);
