@@ -22,6 +22,8 @@ function main() {
   process.argv.forEach(argument => console.log(argument));
 
   const args = process.argv.slice(2);
+
+  //dar de alta
   if (args[0] === 'addArtist')
   {
     const unqfy = getUNQfy();
@@ -35,31 +37,21 @@ function main() {
     console.log('Artist successfully added.');
   }
 
-  //dar de alta
-  if (args[0] === 'addArtist'){
-    const unqfy = getUNQfy();
-    unqfy.addArtist(args[1],{
-     name: args[2],
-     country: args[3]});
-    saveUNQfy(unqfy);
-    console.log('Artist successfully added.');
-  }
-
   if (args[0] === 'addAlbum'){
     const unqfy = getUNQfy();
-    unqfy.addAlbum(args[1],{
-     name: args[2],
-     year: args[3]});
+    unqfy.addTrack(args[1],{
+      name: args[2],
+      year: args[3]});
     saveUNQfy(unqfy);
     console.log('Album successfully added.');
   }
 
   if (args[0] === 'addTrack'){
     const unqfy = getUNQfy();
-    unqfy.addAlbum(args[1],{
-     name: args[2],
-     duration: args[3],
-     genres: args[4]});
+    unqfy.addTrack(args[1],{
+      name: args[2],
+      duration: args[3],
+      genres: args[4]});
     saveUNQfy(unqfy);
     console.log('Track successfully added.');
   }
