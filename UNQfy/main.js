@@ -137,7 +137,6 @@ function main() {
     saveUNQfy(unqfy);
     console.log(unqfy.createPlaylist(args[1], args[2], args[3]));
   }
-
 }
 
 main();

@@ -1,0 +1,60 @@
+A IMPLEMENTAR:
+
+(FASE 1 - Enriquecer el modelo) 
+	
+	- 1) [en UNQfy] getAlbumsForArtist(artistName): Dado el nombre de un artista,retorna una lista con los nombres de los albumes de ese artista.
+
+(Spotify)
+
+	- 2)  [en UNQfy] populateAlbumsForArtist( artistName) ​: Dado un artista de nombre artistName, consulta por los albumes de dicho artista en Spotify, y en base a estos albumes, asociarlos con el artista en UNQfy, de modo tal que, cuando invoque a getAlbumsForArtist(artistName)se incluyan todos los albumes reibidos de Spotify.
+
+	NOTA:  Se necesitará utilizar requests (con callbacks o promesas). Para conectarse a Spotify es necesario pasar por un proceso de autenticación basado en
+OAuth. Para eso:
+		
+		1 ) Copiarse el archivo 'generateSpotifyCredentials.js' (provisto por la cátedra) en el mismo directorio donde se encuentra el código de su unqfy. (HECHOOOOOO)
+		2) Ejecutar: npm install --save express request
+		3) Ejecutar: node generateSpotifyCredentials.js
+		4) Hacer click en link impreso en la terminal.
+		5) Ese link lo llevará a loguearse en spotify (deberá crear una cuenta si no la tiene)
+		6)  Una vez logueado, volver a la terminal. Se habrá generado un archivo spotifyCreds.json con el access_token
+		
+		Ahora... Para poder enviar un request autorizado a spotify deberá enviar el string 'BEARER ' + access_token en el Header 'Authorization' en cada request. Utilizando request-promise:
+
+		const rp = require('request-promise');
+		const options = {
+		url: 'ALGUN_ENDPOINT_DE_SPOTIFY'
+		headers: { Authorization: 'Bearer ' + 'ACCESS_TOKEN' },
+		json: true,
+		};
+		rp.get(options).then((response) => //hacer algo con response);
+
+		API documentada: 
+		https://beta.developer.spotify.com/documentation/web-api/reference/
+
+		end point: 
+		https://beta.developer.spotify.com/documentation/web-api/reference/artists/get-artists-albums/
+
+(MusixMatch)
+
+	-3) [en Track] getLyrics(): Retornar un String con la letra del track. De no tenerlo, lo busca en MusicxMatch, lo guarda y luego lo retorna.
+
+	NOTA: La validación está explicada en Practica 6 - Punto 3.
+	
+	API documentacion:
+	https://developer.musixmatch.com/documentation
+
+	end point:
+	https://developer.musixmatch.com/documentation/api-reference/track-lyrics-get
+
+	Se necesitará tener el listado de Tracks que macheen con un string. Para eso se usa el end point:
+	https://developer.musixmatch.com/documentation/api-reference/track-search
+
+(FASE 2 - Desarrollo de la API Rest para UNQfy)
+
+	- 4) Crear la clase unqfyApiRest.js (HECHOOOOO)
+	(Realizar en esta clase todo el comportamiento del cuadro del visado2)
+	
+
+	
+
+
