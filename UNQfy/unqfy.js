@@ -368,6 +368,12 @@ class UNQfy {
     };
   }
 
+  //artistName: Nombre del artista (String)
+  // retorna: una lista con los nombres de los albumes de ese artista.
+  getAlbumsForArtist(artistName)
+  {
+    return this.getAlbumByArtist(artistName).forEach(album =>album.getName());
+  }
 
   save(filename) 
   {
