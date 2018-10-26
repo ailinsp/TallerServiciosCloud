@@ -35,14 +35,14 @@ A IMPLEMENTAR:
 
 (MusixMatch)
 
-	-3) [en Track] getLyrics(): Retornar un String con la letra del track. De no tenerlo, lo busca en MusicxMatch, lo guarda y luego lo retorna.
+	-3) [en Track] getLyrics(): Retornar un String con la letra del track. De no tenerlo, lo busca en MusicxMatch, lo guarda y luego lo retorna. (HECHOOOO)
 
 	NOTA: Al igual como en Spotify, necesitaremos registrarnos y obtener nuestra credencial ( la misma que en  la Practica 6 - Punto 3 de MusicxMatch).
 	
 		1) Registrarse en ​ https://developer.musixmatch.com/signup
 		2) Luego, Ir a ​ https://developer.musixmatch.com/admin/applications​ y copiarnos el apikey de nuestra aplicación. Este apikey será enviado en todos los request para poder utilizar la API deMusicxMatch.
 		3) Reemplazar la apikey recibida por la que se encuentra en  'apikey: '  de la clase MusixMatchApiRest.js para utilizarla.
-		4) (Ver el archivo MusixMatchApiRest.js la cual muestra un ejemplo con el endpoint ​ artist.search ​ para buscar los artistas que tengan el string “Queen”.)
+		4) (Ver el archivo MusixmatchApiRest.js la cual muestra un ejemplo con el endpoint ​ artist.search ​ para buscar los artistas que tengan el string “Queen”.)
 
 	API documentacion:
 	https://developer.musixmatch.com/documentation
@@ -56,7 +56,7 @@ A IMPLEMENTAR:
 (FASE 2 - Desarrollo de la API Rest para UNQfy)
 
 	- 4) Crear la clase unqfyApiRest.js (HECHOOOOO)
-	(Realizar en esta clase todo el comportamiento del cuadro del visado2)
+	-5) (Realizar en esta clase unqfyApiRest.js todo el comportamiento del cuadro del visado2)
 	
 
 	
