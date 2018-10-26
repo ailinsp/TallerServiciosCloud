@@ -1,15 +1,12 @@
-// const genres = [];
-// const id = 0;
-// const name = '';
-// const duration = 0;
-// const author = '';
+class Track {
 
-class Track{
-  constructor(id, name, duration, genres){
+  constructor(id, name, duration, genres)
+  {
     this.id = id;
     this.name = name;
     this.duration = duration;
     this.genres = genres;
+    this.lyrics = undefined;
   }
 
   getName()
@@ -76,7 +73,7 @@ class Track{
       }
     }
     */
-    let result = genresL.filter(genre => this.hasGenre(genre));
+    const result = genresL.filter(genre => this.hasGenre(genre));
     let cant = 0;
     result.forEach(element => {
       cant++;
@@ -85,11 +82,15 @@ class Track{
     // return result.lenght > 0; 
     return (cant > 0);
   }
+
+  // Retornar un String con la letra del track. De no tenerlo, lo busca en MusicxMatch, lo guarda y luego lo retorna.
+  getLyrics()
+  {
+    if (this.lyrics === undefined)
+    {
+      
+    }
+  }
 }
 
-
-
 module.exports = Track;
-
-
-

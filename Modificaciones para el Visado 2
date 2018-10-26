@@ -6,10 +6,9 @@ A IMPLEMENTAR:
 
 (Spotify)
 
-	- 2)  [en UNQfy] populateAlbumsForArtist( artistName) ​: Dado un artista de nombre artistName, consulta por los albumes de dicho artista en Spotify, y en base a estos albumes, asociarlos con el artista en UNQfy, de modo tal que, cuando invoque a getAlbumsForArtist(artistName)se incluyan todos los albumes reibidos de Spotify.
+	- 2)  [en UNQfy] populateAlbumsForArtist( artistName) ​: Dado un artista de nombre artistName, consulta por los albumes de dicho artista en Spotify, y en base a estos albumes, asociarlos con el artista en UNQfy, de modo tal que, cuando invoque a getAlbumsForArtist(artistName) se incluyan todos los albumes reibidos de Spotify.
 
-	NOTA:  Se necesitará utilizar requests (con callbacks o promesas). Para conectarse a Spotify es necesario pasar por un proceso de autenticación basado en
-OAuth. Para eso:
+	NOTA:  Se necesitará utilizar requests (con callbacks o promesas). Para conectarse a Spotify es necesario pasar por un proceso de autenticación basado en OAuth. Para eso:
 		
 		1 ) Copiarse el archivo 'generateSpotifyCredentials.js' (provisto por la cátedra) en el mismo directorio donde se encuentra el código de su unqfy. (HECHOOOOOO)
 		2) Ejecutar: npm install --save express request
@@ -38,8 +37,13 @@ OAuth. Para eso:
 
 	-3) [en Track] getLyrics(): Retornar un String con la letra del track. De no tenerlo, lo busca en MusicxMatch, lo guarda y luego lo retorna.
 
-	NOTA: La validación está explicada en Practica 6 - Punto 3.
+	NOTA: Al igual como en Spotify, necesitaremos registrarnos y obtener nuestra credencial ( la misma que en  la Practica 6 - Punto 3 de MusicxMatch).
 	
+		1) Registrarse en ​ https://developer.musixmatch.com/signup
+		2) Luego, Ir a ​ https://developer.musixmatch.com/admin/applications​ y copiarnos el apikey de nuestra aplicación. Este apikey será enviado en todos los request para poder utilizar la API deMusicxMatch.
+		3) Reemplazar la apikey recibida por la que se encuentra en  'apikey: '  de la clase MusixMatchApiRest.js para utilizarla.
+		4) (Ver el archivo MusixMatchApiRest.js la cual muestra un ejemplo con el endpoint ​ artist.search ​ para buscar los artistas que tengan el string “Queen”.)
+
 	API documentacion:
 	https://developer.musixmatch.com/documentation
 
