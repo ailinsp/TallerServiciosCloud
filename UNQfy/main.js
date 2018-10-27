@@ -48,7 +48,7 @@ function main() {
 
   if (args[0] === 'addTrack'){
     const unqfy = getUNQfy();
-    unqfy.addTrack(args[1],{
+    unqfy.addTrack(args[1], {
       name: args[2],
       duration: args[3],
       genres: args[4]});
@@ -66,14 +66,14 @@ function main() {
 
   if (args[0] === "removeAlbum"){
     const unqfy = getUNQfy();
-    unqfy.removeAlbum(args[1]);
+    unqfy.removeAlbum(args[1], args[2]);
     saveUNQfy(unqfy);
     console.log("Album successfully removed.");
   }
 
   if (args[0] === "removeTrack"){
     const unqfy = getUNQfy();
-    unqfy.removeTrack(args[1]);
+    unqfy.removeTrack(args[1], args[2], args[3]);
     saveUNQfy(unqfy);
     console.log("Track successfully removed.");
   }

@@ -3,30 +3,30 @@ const Track = require('./track.js');
 
 class Album {
 
-    constructor(id, name,year){
-        this.id = id;
-        this.year = year;
-        this.name = name;
-        this.tracks = [];
-    }
+  constructor(id, name,year){
+    this.id = id;
+    this.year = year;
+    this.name = name;
+    this.tracks = [];
+  }
 
-    getId()
-    {
-        return this.id;
-    }
+  getId()
+  {
+    return this.id;
+  }
 
-    addNewTrack(track){
-        this.tracks.push(track);
-    }
+  addNewTrack(track){
+    this.tracks.push(track);
+  }
 
-    searchTrack(trackName){
-        let searchedTrack = this.getTracks().find(track => track.isTrack(trackName));
-        if (searchedTrack === undefined){
-            throw new Error("No se encontro el track " + trackName);
-        }     
-        return searchedTrack;
-    }
-    /*
+  searchTrack(trackName){
+    const searchedTrack = this.getTracks().find(track => track.isTrack(trackName));
+    if (searchedTrack === []){
+      throw new Error('No se encontro el track ' + trackName);
+    }     
+    return searchedTrack;
+  }
+  /*
     removeTrack(trackName){
         let removedTrack = this.searchTrack(trackName);
         if (removedTrack === undefined){
@@ -36,34 +36,34 @@ class Album {
     } 
     */
 
-    removeTrack(trackToRemove)
+  removeTrack(trackToRemove)
+  {
+    const index = this.tracks.indexOf(trackToRemove);
+    if (index < 0)
     {
-        let index = this.tracks.indexOf(trackToRemove);
-        if (index < 0)
-        {
-            throw new Error("El album " + this.getName() + " no posee el track " + trackToRemove.getName());
-        }
-        this.tracks.splice(index,1);
+      throw new Error('El album ' + this.getName() + ' no posee el track ' + trackToRemove.getName());
     }
+    this.tracks.splice(index,1);
+  }
     
-    hasName(albumName){
-        return this.name === albumName;   
-    }
+  hasName(albumName){
+    return this.name === albumName;   
+  }
 
-    isId(albumId){
-        return this.id === albumId;    
-    }
+  isId(albumId){
+    return this.id === albumId;    
+  }
     
-    getTracks(){
-        return this.tracks;
-    }
-    getName(){
-        return this.name;
-    }
+  getTracks(){
+    return this.tracks;
+  }
+  getName(){
+    return this.name;
+  }
 
-    isPartOfName(nameAlbum){
-        return this.getName().includes(nameAlbum);
-      }
+  isPartOfName(nameAlbum){
+    return this.getName().includes(nameAlbum);
+  }
 }
 
 module.exports = Album;

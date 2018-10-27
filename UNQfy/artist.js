@@ -69,7 +69,7 @@ class Artist {
   getAlbumByName(albumName)
   {
     const result = this.albums.filter(album => album.hasName(albumName)); 
-    if (result === undefined)
+    if (result === [])
     {
       throw new Error('El artista ' + this.getName() + ' no tiene un album llamado ' + albumName);
     }
