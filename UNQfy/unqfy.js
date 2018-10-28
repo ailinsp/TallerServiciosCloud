@@ -374,6 +374,45 @@ class UNQfy {
     const classes = [UNQfy, Track, PlayList, Artist, Album];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
+
+
+  getArtistIDByNameSpotify(artistName){
+    const options = {
+      url: `https://api.spotify.com/v1/search?q=${artistName}&type=artist&limit=1`,
+      headers: { Authorization: 'Bearer ' + 'BQBDpNNPOsWs9cqtXAfoLxzBOzEZ4LEBpAeNGMaBTC-WdhOy1eXE0_gemcIZwlhxhrUvOvpKNyd8-7umHKk9wmkSh-KBx_2ZfYIlApbPPhJzrx0K3NrhunOHqDltsSsuZbTgQMT_iX8DhJENnzskdCbQKjoAq6V0jw'},
+      json: true,
+    };
+    return rp.get(options).then((response) => {
+        console.log('Artist founded...');
+        return response.artists.items[0].id;
+      })
+      .catch((error) => console.log('Something went wrong, the artist problably does not exist', error));
+  }
+  
+  getAlbumsFromArtistSpotify(artistId){
+    const options = {
+      url: `https://api.spotify.com/v1/artists/${artistId}/albums?market=ES&limit=5`,
+      headers: { Authorization: 'Bearer ' + 'BQBDpNNPOsWs9cqtXAfoLxzBOzEZ4LEBpAeNGMaBTC-WdhOy1eXE0_gemcIZwlhxhrUvOvpKNyd8-7umHKk9wmkSh-KBx_2ZfYIlApbPPhJzrx0K3NrhunOHqDltsSsuZbTgQMT_iX8DhJENnzskdCbQKjoAq6V0jw'},
+      json: true,
+    };
+    return rp.get(options).then((response) => {
+        console.log('Getting albums...');
+        return response.items;
+      })
+      .catch((error) => console.log('Something went wrong, the artist problably does not exist'));  
+  }
+
+  populateAlbumsForArtist(artistName){
+    return this.getArtistIDByNameSpotify(artistName)
+      .then((id) => this.getAlbumsFromArtistSpotify(id))
+      .then((albumsMap) => {
+        albumsMap.forEach((albumMap) => {
+          this.addAlbum(artistName.getId, {name: albumMap.name, year: albumMap.date});
+        });
+        return this;
+      });
+  }
+
 }
 
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
