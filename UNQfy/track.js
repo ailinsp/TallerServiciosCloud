@@ -1,4 +1,5 @@
 const MusixMatch = require('./musixmatch.js');
+const rp = require('request-promise');
 
 class Track 
 {
@@ -9,6 +10,16 @@ class Track
     this.duration = duration;
     this.genres = genres;
     this.lyrics = undefined;
+  }
+
+  hasLyrics()
+  {
+    return (this.lyrics !== undefined);
+  }
+
+  getLyrics()
+  {
+    return this.lyrics;
   }
 
   getName()
@@ -85,18 +96,6 @@ class Track
     return (cant > 0);
   }
   
-  // retornar: la letra del track (String). De no tenerlo, lo busca en MusicxMatch, lo guarda y luego lo retorna.
-  getLyrics()
-  {
-    if (this.lyrics === undefined)
-    {
-      console.log('Bucando letra en MusixMatch...');
-      const newLyric = new MusixMatch().searchLyric(this.name);
-      this.lyrics = newLyric;
-    }
-
-    return this.lyrics;
-  }
 }
 
 module.exports = Track;

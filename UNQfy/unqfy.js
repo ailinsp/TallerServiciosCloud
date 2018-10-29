@@ -5,6 +5,7 @@ const Track = require('./track.js');
 const PlayList = require('./playList.js');
 const Artist = require('./artist.js');
 const Album = require('./album.js');
+const MusixMatch = require('./musixmatch.js');
 
 class UNQfy {
 
@@ -157,11 +158,6 @@ class UNQfy {
   getAllAlbums()
   {  
     const albumsList = this.artists.map(artist => artist.getAlbums());
-    /*
-    let resultFinal= [];
-    const result = [].concat(albums);
-    return resultFinal= [].concat.apply([], result);
-    */
     const albums = albumsList.reduce ((a,b) => { 
       return a.concat(b);
     });
@@ -281,23 +277,13 @@ class UNQfy {
   {
     const allTracks = this.getAllTracks();
     return allTracks.filter(track => track.hasAnyGenre(genres));
-    /*
-    const tracks= [];
-    const listaT= this.getAllTracks();
-    for (let i=0; i < listaT.length; i++){
-      if(listaT[i].hasAnyGenre(genres)){
-        tracks.push(listaT[i]);
-      }
-    }
-    return listaT;
-    */
   }
 
   // artistName: nombre de artista(string)
   // retorna: los tracks interpredatos por el artista con nombre artistName
-  getTracksMatchingArtist(artist) 
+  getTracksMatchingArtist(artistName) 
   {
-    const albumsFromArtist = this.getAlbumByArtist(artist.getName());
+    const albumsFromArtist = this.getAlbumByArtist(artistName);
     return this.getAllTracksFromAlbums(albumsFromArtist);
   }
 
@@ -355,6 +341,42 @@ class UNQfy {
   getAlbumsForArtist(artistName)
   {
     return this.getAlbumByArtist(artistName).forEach(album =>album.getName());
+  }
+
+  getLyric(aTrack, artistName)
+  {
+    if(aTrack.hasLyrics())
+    {
+      return aTrack.getLyrics() ;
+    }
+    else
+    {
+      console.log("Buscando letra del track " + aTrack.getName() + " en musixmatch... ");
+
+      const musixmatch = new MusixMatch();
+      return musixmatch.searchLyric(aTrack.getName(), artistName).then(newlyric => 
+      {
+        aTrack.lyrics = newlyric;
+        //return aTrack;
+        return 'Letra encontrada';
+      }).catch(err => console.log(err));
+    }
+  }
+
+  // trackName: El nombre el track (String)
+  // artistName: nombre del artista (String)
+  // retorna: El track del artista
+  getTrackFromArtist(trackName, artistName)
+  {
+    const artistTracks = this.getAlbumByArtist(artistName).map(a => a.getTracks()).reduce( (a,b) => { 
+      return a.concat(b); 
+    });
+    const result = artistTracks.find(t => t.getName() === trackName);
+    if (result === undefined)
+    {
+      new Error('No se encontró el track ' + trackName + ' del artista ' + artistName);
+    }
+    return result;
   }
 
   save(filename) 

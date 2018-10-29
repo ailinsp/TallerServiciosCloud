@@ -108,7 +108,7 @@ describe('Add, remove and filter data', () => {
     createAndAddTrack(unqfy, album3.id, 'Another song', 500, ['classic']);
     createAndAddTrack(unqfy, album3.id, 'Another song II', 500, ['movie']);
 
-    const matchingTracks = unqfy.getTracksMatchingArtist(artist);
+    const matchingTracks = unqfy.getTracksMatchingArtist(artist.name);
 
     assert.isArray(matchingTracks);
     assert.lengthOf(matchingTracks, 3);

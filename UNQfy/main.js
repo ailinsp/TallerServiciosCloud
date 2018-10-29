@@ -57,25 +57,25 @@ function main() {
   }
   
   //dar de baja
-  if (args[0] === "removeArtist"){
+  if (args[0] === 'removeArtist'){
     const unqfy = getUNQfy();
     unqfy.removeArtist(args[1]);
     saveUNQfy(unqfy);
-    console.log("Artist successfully removed.");
+    console.log('Artist successfully removed.');
   }
 
-  if (args[0] === "removeAlbum"){
+  if (args[0] === 'removeAlbum'){
     const unqfy = getUNQfy();
     unqfy.removeAlbum(args[1], args[2]);
     saveUNQfy(unqfy);
-    console.log("Album successfully removed.");
+    console.log('Album successfully removed.');
   }
 
-  if (args[0] === "removeTrack"){
+  if (args[0] === 'removeTrack'){
     const unqfy = getUNQfy();
     unqfy.removeTrack(args[1], args[2], args[3]);
     saveUNQfy(unqfy);
-    console.log("Track successfully removed.");
+    console.log('Track successfully removed.');
   }
 
   //listar todos los artistas
@@ -136,6 +136,19 @@ function main() {
     unqfy.createPlaylist(args[1], args[2], args[3]);
     saveUNQfy(unqfy);
     console.log(unqfy.createPlaylist(args[1], args[2], args[3]));
+  }
+  
+  if (args[0] === 'getLyric'){
+    const unqfy = getUNQfy();
+
+    const track = unqfy.getTrackFromArtist(args[1], args[2]);
+    unqfy.getLyric(track, args[2]).then(result => 
+    {
+      saveUNQfy(unqfy);
+      console.log('Resultado final: ');
+      console.log(unqfy.getTrackFromArtist(args[1], args[2]));
+    });
+  
   }
 }
 
