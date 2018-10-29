@@ -5,8 +5,10 @@
   "main": "main.js",
   "dependencies": {
     "chai": "^4.1.2",
+    "express": "^4.16.4",
     "picklejs": "github:lwoites/picklejs",
     "picklify": "^1.0.1",
+    "request": "^2.88.0",
     "u": "^0.1.0"
   },
   "devDependencies": {
