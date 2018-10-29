@@ -1,6 +1,7 @@
 
 const picklify = require('picklify'); // para cargar/guarfar unqfy
 const fs = require('fs'); // para cargar/guarfar unqfy
+const rp = require('request-promise');
 const Track = require('./track.js');
 const PlayList = require('./playList.js');
 const Artist = require('./artist.js');
@@ -345,22 +346,13 @@ class UNQfy {
 
   getLyric(aTrack, artistName)
   {
-    if(aTrack.hasLyrics())
+    console.log("Buscando letra del track " + aTrack.getName() + " en musixmatch... ");
+    const musixmatch = new MusixMatch();
+    return musixmatch.searchLyric(aTrack.getName(), artistName).then(newlyric => 
     {
-      return aTrack.getLyrics() ;
-    }
-    else
-    {
-      console.log("Buscando letra del track " + aTrack.getName() + " en musixmatch... ");
-
-      const musixmatch = new MusixMatch();
-      return musixmatch.searchLyric(aTrack.getName(), artistName).then(newlyric => 
-      {
-        aTrack.lyrics = newlyric;
-        //return aTrack;
-        return 'Letra encontrada';
-      }).catch(err => console.log(err));
-    }
+      aTrack.lyrics = newlyric;
+      return 'Letra encontrada';
+    }).catch(err => console.log(err));
   }
 
   // trackName: El nombre el track (String)
@@ -398,17 +390,18 @@ class UNQfy {
   }
 
 
-  getArtistIDByNameSpotify(artistName){
+  getArtistIDByNameSpotify(artistName)
+  {
     const options = {
       url: `https://api.spotify.com/v1/search?q=${artistName}&type=artist&limit=1`,
       headers: { Authorization: 'Bearer ' + 'BQBDpNNPOsWs9cqtXAfoLxzBOzEZ4LEBpAeNGMaBTC-WdhOy1eXE0_gemcIZwlhxhrUvOvpKNyd8-7umHKk9wmkSh-KBx_2ZfYIlApbPPhJzrx0K3NrhunOHqDltsSsuZbTgQMT_iX8DhJENnzskdCbQKjoAq6V0jw'},
       json: true,
     };
-    return rp.get(options).then((response) => {
-        console.log('Artist founded...');
-        return response.artists.items[0].id;
-      })
-      .catch((error) => console.log('Something went wrong, the artist problably does not exist', error));
+    return rp.get(options).then((response) => 
+    {
+      console.log('Artist founded...');
+      return response.artists.items[0].id;
+    }).catch((error) => console.log('Something went wrong, the artist problably does not exist', error));
   }
   
   getAlbumsFromArtistSpotify(artistId){
@@ -417,11 +410,11 @@ class UNQfy {
       headers: { Authorization: 'Bearer ' + 'BQBDpNNPOsWs9cqtXAfoLxzBOzEZ4LEBpAeNGMaBTC-WdhOy1eXE0_gemcIZwlhxhrUvOvpKNyd8-7umHKk9wmkSh-KBx_2ZfYIlApbPPhJzrx0K3NrhunOHqDltsSsuZbTgQMT_iX8DhJENnzskdCbQKjoAq6V0jw'},
       json: true,
     };
-    return rp.get(options).then((response) => {
-        console.log('Getting albums...');
-        return response.items;
-      })
-      .catch((error) => console.log('Something went wrong, the artist problably does not exist'));  
+    return rp.get(options).then((response) => 
+    {
+      console.log('Getting albums...');
+      return response.items;
+    }).catch((error) => console.log('Something went wrong, the artist problably does not exist'));  
   }
 
   populateAlbumsForArtist(artistName){

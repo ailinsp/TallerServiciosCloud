@@ -142,12 +142,20 @@ function main() {
     const unqfy = getUNQfy();
 
     const track = unqfy.getTrackFromArtist(args[1], args[2]);
-    unqfy.getLyric(track, args[2]).then(result => 
+    if (track.hasLyrics)
     {
-      saveUNQfy(unqfy);
-      console.log('Resultado final: ');
-      console.log(unqfy.getTrackFromArtist(args[1], args[2]));
-    });
+      console.log(track.getLyrics());
+    }
+    else
+    {
+      unqfy.getLyric(track, args[2]).then(result => 
+      {
+        saveUNQfy(unqfy);
+        console.log('Resultado final: ');
+        console.log(unqfy.getTrackFromArtist(args[1], args[2]));
+      });
+    }
+    
   
   }
 }
