@@ -11,6 +11,11 @@ class Artist {
     this.albums = [];
   }
 
+  getId()
+  {
+    return this.id;
+  }
+
   isArtist(name){
     return this.name === name;
   }

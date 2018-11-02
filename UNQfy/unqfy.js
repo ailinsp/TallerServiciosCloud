@@ -7,6 +7,7 @@ const PlayList = require('./playList.js');
 const Artist = require('./artist.js');
 const Album = require('./album.js');
 const MusixMatch = require('./musixmatch.js');
+const Spotify = require('./spotify.js');
 
 class UNQfy {
 
@@ -15,6 +16,7 @@ class UNQfy {
     this.artists = [];
     this.playlists = [];
     this.ids = 0;
+    this.token = 'BQB82B1QifeUx7_AaxI6wbYyCjc46nOOgn4RMjtEQVT9JdD9-hhSztDgvp2eXvWiJyrkvJm6rRaLX8OV0szB1Tyd-s_z78NtYLLepgwSTSQVIN9mdLhlDgzX8WNE2Nv7CNbTPquPClX3P0gN52Jg_WBwOej91h3J7szt5Ga6uLZBIAeaWa-h';
   }
   // returna: Una identificación irrepetible.
   getId()
@@ -126,7 +128,7 @@ class UNQfy {
   */
     const newAlbum = new Album(this.getId(), albumData.name, parseInt(albumData.year));
     this.getArtistById(parseInt(artistId)).addAlbum(newAlbum);
-    console.log(newAlbum + 'artista con id: ' + artistId);
+    console.log(newAlbum);
     return newAlbum;
   }
 
@@ -346,7 +348,7 @@ class UNQfy {
 
   getLyric(aTrack, artistName)
   {
-    console.log("Buscando letra del track " + aTrack.getName() + " en musixmatch... ");
+    console.log('Buscando letra del track ' + aTrack.getName() + ' en musixmatch... ');
     const musixmatch = new MusixMatch();
     return musixmatch.searchLyric(aTrack.getName(), artistName).then(newlyric => 
     {
@@ -388,46 +390,40 @@ class UNQfy {
     const classes = [UNQfy, Track, PlayList, Artist, Album];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
-
-
+  
   getArtistIDByNameSpotify(artistName)
   {
     const options = {
       url: `https://api.spotify.com/v1/search?q=${artistName}&type=artist&limit=1`,
-      headers: { Authorization: 'Bearer ' + 'BQBDpNNPOsWs9cqtXAfoLxzBOzEZ4LEBpAeNGMaBTC-WdhOy1eXE0_gemcIZwlhxhrUvOvpKNyd8-7umHKk9wmkSh-KBx_2ZfYIlApbPPhJzrx0K3NrhunOHqDltsSsuZbTgQMT_iX8DhJENnzskdCbQKjoAq6V0jw'},
+      headers: { Authorization: 'Bearer ' + this.token},
       json: true,
     };
     return rp.get(options).then((response) => 
     {
       console.log('Artist founded...');
-      return response.artists.items[0].id;
+      return response.artists.items[0];
     }).catch((error) => console.log('Something went wrong, the artist problably does not exist', error));
   }
   
-  getAlbumsFromArtistSpotify(artistId){
+  getAlbumsFromArtistSpotify(artistId, id){
     const options = {
       url: `https://api.spotify.com/v1/artists/${artistId}/albums?market=ES&limit=5`,
-      headers: { Authorization: 'Bearer ' + 'BQBDpNNPOsWs9cqtXAfoLxzBOzEZ4LEBpAeNGMaBTC-WdhOy1eXE0_gemcIZwlhxhrUvOvpKNyd8-7umHKk9wmkSh-KBx_2ZfYIlApbPPhJzrx0K3NrhunOHqDltsSsuZbTgQMT_iX8DhJENnzskdCbQKjoAq6V0jw'},
+      headers: { Authorization: 'Bearer ' + this.token},
       json: true,
     };
     return rp.get(options).then((response) => 
     {
       console.log('Getting albums...');
-      return response.items;
+      return response.items.forEach(album => this.addAlbum(id, album));
     }).catch((error) => console.log('Something went wrong, the artist problably does not exist'));  
   }
 
-  populateAlbumsForArtist(artistName){
+  populateAlbumsForArtist(artistName)
+  {
+    const artistId = this.findArtist(artistName).getId();
     return this.getArtistIDByNameSpotify(artistName)
-      .then((id) => this.getAlbumsFromArtistSpotify(id))
-      .then((albumsMap) => {
-        albumsMap.forEach((albumMap) => {
-          this.addAlbum(artistName.getId, {name: albumMap.name, year: albumMap.date});
-        });
-        return this;
-      });
+      .then((artist) => this.getAlbumsFromArtistSpotify(artist.id, artistId));
   }
-
 }
 
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente

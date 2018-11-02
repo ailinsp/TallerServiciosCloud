@@ -155,8 +155,17 @@ function main() {
         console.log(unqfy.getTrackFromArtist(args[1], args[2]));
       });
     }
-    
-  
+  }
+
+  if (args[0] === 'populateAlbumsForArtist'){
+    const unqfy = getUNQfy();
+    unqfy.populateAlbumsForArtist(args[1]).then(result => 
+    { 
+      saveUNQfy(unqfy);
+      console.log('Resultado final: ');
+      console.log(unqfy.getAlbumByArtist(args[1]) );
+    });
+      
   }
 }
 
