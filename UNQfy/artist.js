@@ -48,14 +48,6 @@ class Artist {
   }
   
   getAllTracks(){
-    /*
-    let tracks= [];
-    //return this.albums.forEach(album => album.getTracks());
-    for(let i=0;i<this.albums.length;i++){
-      tracks= tracks.concat(this.albums[i].getTracksAlbum());
-    }
-    return tracks;
-    */
     return this.albums.map(album => album.getTracks()).reduce((a,b) => {return a.concat(b);});
   } 
   
@@ -64,7 +56,7 @@ class Artist {
   }
   
   isPartOfName(artistName){
-    return this.getName().includes(artistName);
+    return this.getName().toLowerCase().includes(artistName.toLowerCase());
   }
 
   getName(){
@@ -79,6 +71,13 @@ class Artist {
       throw new Error('El artista ' + this.getName() + ' no tiene un album llamado ' + albumName);
     }
     return result;
+  }
+
+  // pregunta si tiene algun album con la id albumId
+  hasAlbumId(albumId)
+  {
+    const result = this.albums.find(album => album.isId());
+    return (result !== undefined);
   }
 }
 

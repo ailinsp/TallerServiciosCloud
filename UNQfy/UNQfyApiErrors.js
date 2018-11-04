@@ -1,0 +1,58 @@
+class ApiError extends Error
+{
+  constructor(message, status, errorCode)
+  {
+    super(message);
+    this.status = status;
+    this.errorCode = errorCode;
+  }
+}
+
+class MissingParameters extends ApiError
+{
+  constructor()
+  {
+    super('Falta ingresar parametros.', 400, 'BAD_REQUEST');
+  }
+}
+
+class ArtistHasAlreadyBeenRegistered extends ApiError
+{
+  constructor(artistName)
+  {
+    super('El artista ' + artistName + ' ya fue registrado.', 409, 'RESOURCE_ALREADY_EXISTS');
+  }
+}
+
+class ArtistIdNotFoundException extends ApiError
+{
+  constructor(id)
+  {
+    super('No se encontro un artista con la identificacion' + id, 404, 'RESOURCE_NOT_FOUND');
+  }
+}
+
+class TrackIdNotFoundException extends ApiError
+{
+  constructor(id)
+  {
+    super('No se encontro un track con la identificacion' + id, 404, 'RESOURCE_NOT_FOUND');
+  }
+}
+
+class AlbumIdNotFoundException extends ApiError
+{
+  constructor(id)
+  {
+    super('No se encontro un album con la identificacion' + id, 404, 'RESOURCE_NOT_FOUND');
+  }
+}
+
+module.exports = {
+  ApiError,
+  ArtistIdNotFoundException,
+  ArtistHasAlreadyBeenRegistered,
+  MissingParameters,
+  AlbumIdNotFoundException,
+  TrackIdNotFoundException,
+};

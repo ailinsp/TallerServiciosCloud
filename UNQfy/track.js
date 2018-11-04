@@ -12,6 +12,11 @@ class Track
     this.lyrics = undefined;
   }
 
+  getId()
+  {
+    return this.id;
+  }
+
   hasLyrics()
   {
     return (this.lyrics !== undefined);

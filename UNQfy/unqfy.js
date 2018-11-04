@@ -8,6 +8,8 @@ const Artist = require('./artist.js');
 const Album = require('./album.js');
 const MusixMatch = require('./musixmatch.js');
 const Spotify = require('./spotify.js');
+const errors = require('./UNQfyApiErrors.js');
+//import {ArtistIdNotFoundException} from './UNQfyApiErrors';
 
 class UNQfy {
 
@@ -49,12 +51,12 @@ class UNQfy {
     - una propiedad name (string)
     - una propiedad country (string)
   */
-    // let o const?
     const newArtist = new Artist(this.getId(),artistData.name,artistData.country);
-    //this.ids = this.id+1;
+
     if (this.hasArtistToAdd(newArtist))
     {
-      throw new Error('El artista ' + newArtist.getName() + ' ya fue registrado');
+      throw new errors.ArtistHasAlreadyBeenRegistered(artistData.name);
+      // throw new Error('El artista ' + newArtist.getName() + ' ya fue registrado');
     }
     else // No es necesario que este en el Else, puede estar afuera.
     {
@@ -120,16 +122,26 @@ class UNQfy {
   //   albumData.name (string)
   //   albumData.year (number)
   // retorna: el nuevo album creado
-  addAlbum(artistId, albumData) {
-  /* Crea un album y lo agrega al artista con id artistId.
-    El objeto album creado debe tener (al menos):
-     - una propiedad name (string)
-     - una propiedad year (number)
-  */
+  addAlbum(artistId, albumData) 
+  {
     const newAlbum = new Album(this.getId(), albumData.name, parseInt(albumData.year));
     this.getArtistById(parseInt(artistId)).addAlbum(newAlbum);
     console.log(newAlbum);
     return newAlbum;
+  }
+
+
+  // Elimina el album con el id albumId
+  removeAlbumById(albumId)
+  {
+    const artist = this.artists.find(ar => ar.hasAlbumId(albumId));
+    // NOTA: Todos los albumes estan relacionados con un artista.
+    if (artist=== undefined)
+    {
+      throw new errors.AlbumIdNotFoundException(albumId);
+    }
+    const album = artist.getAlbums.find(al => al.isId(albumId));
+    this.removeAlbum(artist.getName(), album.getName());
   }
 
   // Elimina el album con el nombre albumName del artista artistName
@@ -150,6 +162,7 @@ class UNQfy {
     
     console.log('Se ha eliminado el album ' + albumToRemove.getName() + ' del artista ' + artist.getName() + ' con exito.');
   }
+
 
   // return: el album de nombre albumName del artista artist.
   getAlbumFromArtist(artist, albumName)
@@ -175,7 +188,8 @@ class UNQfy {
     const result = this.getAllAlbums().find(album => album.isId(id));
     if (result === undefined)
     {
-      throw new Error('No existe un album con la identificacion: ' + id);
+      throw new errors.AlbumIdNotFoundException(id);
+      // throw new Error('No existe un album con la identificacion: ' + id);
     }
     return result;
   }
@@ -235,7 +249,8 @@ class UNQfy {
     
     if (result === undefined)
     {
-      throw new Error('No se encontro un artista con la identificacion: ' + id);
+      throw new errors.ArtistIdNotFoundException(id);
+      // throw new Error('No se encontro un artista con la identificacion: ' + id);
     }
     return result;
   }
@@ -323,12 +338,23 @@ class UNQfy {
     return this.findAlbum(name).getTracks();
   }
 
+  // retorna: todos los artistas cuyos nombres macheen con el nombre dado.
+  searchArtistsByName(name)
+  {
+    return this.artists.filter(artist => artist.isPartOfName(name));
+  }
+  // retorna: todos los albumes cuyos nombres macheen con el nombre dado.
+  searchAlbumsByName(name)
+  {
+    return this.getAllAlbums().filter(album => album.isPartOfName(name));
+  }
+
   // retorna: todos los tracks, albums, artistas y playlista cuyos nombres macheen con name.
   searchByName(name)
   {
     const tracksL = this.getAllTracks().filter(track => track.isPartOfName(name));
-    const albums = this.getAllAlbums().filter(album => album.isPartOfName(name));
-    const artists = this.artists.filter(artist => artist.isPartOfName(name));
+    const albums = this.searchAlbumsByName(name);
+    const artists = this.searchArtistsByName(name);
     const playListsL = this.playlists.filter(playList => playList.isPartOfName(name));
     
     return {
@@ -345,6 +371,19 @@ class UNQfy {
   {
     return this.getAlbumByArtist(artistName).forEach(album =>album.getName());
   }
+
+  // retorna: el artista perteneciente al track
+  getArtistFromTrack(track)
+  {
+    const artist = this.artists.find(a => a.hasTrack(track.getId()));
+    // NOTA: Todos los tracks tienen un artista relacionado.
+    if (artist === undefined)
+    {
+      throw new errors.TrackIdNotFoundException(track);
+    }
+    return artist;
+  }
+
 
   getLyric(aTrack, artistName)
   {

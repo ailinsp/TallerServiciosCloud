@@ -1,0 +1,36 @@
+API
+
+Agregar un artista:  					HECHO
+	- Artista repetido					HECHO
+	- Mal ingreso de parametros		HECHO
+
+Obtener un artista:					HECHO
+	- No existe el artista				HECHO
+	- Sin id-> todos los artistas		HECHO
+
+Borrar un artista:						HECHO
+	- Borrar un artista inexistente	HECHO
+
+Buscar artistas:						HECHO
+	-  JSON invalido en el body.		FALTA
+
+Agregar un album a un artista;		HECHO
+	- Album repetido					MAL (falta)
+	- Mal ingreso de parametros		HECHO
+	- JSON invalido en el body.		FALTA
+
+Obtener un album:					HECHO
+	- No existe el album				HECHO
+	- Sin id -> todos los albums		HECHO	
+
+Borrar un album:				MAL(Esta y no lo encuentra)
+	- Borrar un album inexistente	HECHO(no encuentra id a borrar)
+
+Buscar albumes:						HECHO
+	- JSON invalido en el body.		FALTA (si name no esta, trae todo)
+
+Buscar letra de una cancion:			MAL (trae [])
+
+
+
+35

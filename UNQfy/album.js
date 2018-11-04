@@ -63,7 +63,7 @@ class Album {
   }
 
   isPartOfName(nameAlbum){
-    return this.getName().includes(nameAlbum);
+    return this.getName().toLowerCase().includes(nameAlbum.toLowerCase());
   }
 }
 

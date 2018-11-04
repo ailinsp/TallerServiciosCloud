@@ -16,6 +16,7 @@ function saveUNQfy(unqfy, filename = 'data.json') {
   unqfy.save(filename);
 }
 
+
 function main() {
   
   console.log('arguments: ');
@@ -140,9 +141,8 @@ function main() {
   
   if (args[0] === 'getLyric'){
     const unqfy = getUNQfy();
-
     const track = unqfy.getTrackFromArtist(args[1], args[2]);
-    if (track.hasLyrics)
+    if (track.hasLyrics())
     {
       console.log(track.getLyrics());
     }
