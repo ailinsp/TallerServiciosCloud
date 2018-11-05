@@ -130,20 +130,6 @@ class UNQfy {
     return newAlbum;
   }
 
-
-  // Elimina el album con el id albumId
-  removeAlbumById(albumId)
-  {
-    const artist = this.artists.find(ar => ar.hasAlbumId(albumId));
-    // NOTA: Todos los albumes estan relacionados con un artista.
-    if (artist=== undefined)
-    {
-      throw new errors.AlbumIdNotFoundException(albumId);
-    }
-    const album = artist.getAlbums.find(al => al.isId(albumId));
-    this.removeAlbum(artist.getName(), album.getName());
-  }
-
   // Elimina el album con el nombre albumName del artista artistName
   // Si artista o el album no existen se informa el error ocurrido
   removeAlbum (artistName, albumName)
@@ -380,6 +366,18 @@ class UNQfy {
     if (artist === undefined)
     {
       throw new errors.TrackIdNotFoundException(track);
+    }
+    return artist;
+  }
+
+  // retorna: el artista perteneciente al album
+  getArtistFromAlbum(album)
+  {
+    const artist = this.artists.find(a => a.hasAlbumId(album.getId()));
+    // NOTA: Todos los albums tienen un artista relacionado.
+    if (artist === undefined)
+    {
+      throw new errors.AlbumIdNotFoundException(album.name());
     }
     return artist;
   }

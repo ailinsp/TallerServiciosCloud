@@ -27,7 +27,7 @@ function saveUNQfy(unqfy, filename = 'data.json') {
   unqfy.save(filename);
 }
 
-// <*><*><*><*><*> IMPLEMENTACION DEL API <*><*><*><*><*>
+// <*><*><*><*><*> IMPLEMENTACION SERVICIOS <*><*><*><*><*>
 
 // Ruta inicial de nuestra API
 router.get('/', (req, res) => 
@@ -172,7 +172,10 @@ router.route('/albums/:id').delete(function (req, res)
   const unqfy = getUNQfy();
   try
   {
-    unqfy.removeAlbumById(idAlbum);
+    const album = unqfy.getAlbumById(idAlbum);
+    const artist = unqfy.getArtistFromAlbum(album);
+    // unqfy.removeAlbumById(idAlbum);
+    unqfy.removeAlbum(artist.getName(), album.getName());
     res.json({status: 204});
   }
   catch(err)
@@ -223,8 +226,9 @@ router.route('/lyrics').get(function async (req, res)
     }
     else
     {
-      unqfy.getLyric(getLyric, artist.getName()).them (response =>
+      unqfy.getLyric(track, artist.getName()).then(() => 
       {
+        saveUNQfy(unqfy);
         const lyricData = {name: track.getName(), lyrics: track.getLyrics()};
         res.json({status: 200, data: lyricData});
       });

@@ -24,6 +24,14 @@ class ArtistHasAlreadyBeenRegistered extends ApiError
   }
 }
 
+class AlbumHasAlreadyBeenRegistered extends ApiError
+{
+  constructor(albumtName)
+  {
+    super('El album ' + albumtName + ' ya fue registrado.', 409, 'RESOURCE_ALREADY_EXISTS');
+  }
+}
+
 class ArtistIdNotFoundException extends ApiError
 {
   constructor(id)
@@ -55,4 +63,5 @@ module.exports = {
   MissingParameters,
   AlbumIdNotFoundException,
   TrackIdNotFoundException,
+  AlbumHasAlreadyBeenRegistered,
 };

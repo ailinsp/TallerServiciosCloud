@@ -1,4 +1,5 @@
 const Album = require('./album.js');
+const errors = require('./UNQfyApiErrors.js');
 // const albums =[];
 
 class Artist {
@@ -24,14 +25,15 @@ class Artist {
     return this.id === id;
   }
 
-  addAlbum(album){
+  addAlbum(album)
+  {
+    const search = this.albums.find(a => a.hasName(album.getName()) );
+    if (search !== undefined)
+    {
+      throw new errors.AlbumHasAlreadyBeenRegistered(album.getName());
+    }
     this.albums.push(album);
   } 
-  /*
-  removeAlbum(name){
-      albums.splice(albums.findIndex(album => album.getName === name), 1);
-  }
-  */
  
   removeAlbum(album)
   {
@@ -76,7 +78,7 @@ class Artist {
   // pregunta si tiene algun album con la id albumId
   hasAlbumId(albumId)
   {
-    const result = this.albums.find(album => album.isId());
+    const result = this.albums.find(album => album.isId(albumId));
     return (result !== undefined);
   }
 }
