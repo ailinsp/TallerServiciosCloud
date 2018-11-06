@@ -39,6 +39,24 @@ app.use('/api', router);
 app.listen(port);
 console.log('Magic happens on port ' + port);
 
+// ErrorHandler
+function errorHandler(err, req, res, next) {
+  console.error(err.name); // se imprime error en consola
+  //actuamos dependiento el tipo de error 
+  if (err instanceof ApiError){
+    res.status(err.status);
+    res.json({status: err.status, errorCode: err.errorCode});
+  } else if (err.type === 'entity.parse.failed'){
+  // body-parser error para JSON invalido
+    res.status(err.status);
+    res.json({status: err.status, errorCode: 'BAD_REQUEST'});
+  } else {
+  // continua con el error handler por defecto
+    next(err);
+    }
+  }
+
+
 // --- ARTISTAS ---
 
 // Agregar un Artista.
@@ -63,7 +81,6 @@ router.route('/artists').post(function (req, res)
   saveUNQfy(unqfy);
 });
 
-
 // Obtener un Artista por su id.
 router.route('/artists/:id').get(function (req, res)
 {
@@ -79,6 +96,7 @@ router.route('/artists/:id').get(function (req, res)
     res.json({status:err.status, error:err.errorCode});
   }
 });
+
 
 
 // Eliminar un Artista por su id.
