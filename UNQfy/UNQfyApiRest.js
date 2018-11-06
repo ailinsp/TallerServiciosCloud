@@ -53,8 +53,8 @@ function errorHandler(err, req, res, next) {
   } else {
   // continua con el error handler por defecto
     next(err);
-    }
   }
+}
 
 
 // --- ARTISTAS ---
@@ -236,7 +236,8 @@ router.route('/lyrics').get(function async (req, res)
   try
   {
     const track =unqfy.getTrackById(trackId);
-    const artist = unqfy.getArtistFromTrack(track);
+    console.log(track);
+    const artist = unqfy.getArtistFromTrack(trackId);
     if (track.hasLyrics())
     {
       const lyricData = {name: track.getName(), lyrics: track.getLyrics()};

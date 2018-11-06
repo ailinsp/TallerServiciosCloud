@@ -359,13 +359,14 @@ class UNQfy {
   }
 
   // retorna: el artista perteneciente al track
-  getArtistFromTrack(track)
+  getArtistFromTrack(trackId)
   {
-    const artist = this.artists.find(a => a.hasTrack(track.getId()));
+    console.log('buscando artista...');
+    const artist = this.artists.find(artist => artist.hasTrack(trackId));
     // NOTA: Todos los tracks tienen un artista relacionado.
     if (artist === undefined)
     {
-      throw new errors.TrackIdNotFoundException(track);
+      throw new errors.TrackIdNotFoundException(trackId);
     }
     return artist;
   }

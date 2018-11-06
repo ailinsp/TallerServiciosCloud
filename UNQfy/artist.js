@@ -81,6 +81,13 @@ class Artist {
     const result = this.albums.find(album => album.isId(albumId));
     return (result !== undefined);
   }
+
+  // pregunta si el artista tiene el track con id trackId
+  hasTrack(trackId)
+  {
+    const album = this.albums.find(album => album.hasTrack(trackId));
+    return (album !== undefined);
+  }
 }
 
 

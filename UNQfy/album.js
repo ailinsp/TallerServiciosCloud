@@ -65,6 +65,14 @@ class Album {
   isPartOfName(nameAlbum){
     return this.getName().toLowerCase().includes(nameAlbum.toLowerCase());
   }
+
+  // pregunta si el album contiene un track con el id trackId
+  hasTrack(trackId)
+  {
+    const track = this.tracks.find(track => track.isTrack(trackId));
+    return (track !== undefined);
+  }
+
 }
 
 module.exports = Album;
