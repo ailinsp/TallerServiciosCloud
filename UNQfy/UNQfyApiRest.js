@@ -12,6 +12,7 @@ const errors = require('./UNQfyApiErrors.js'); // api de errores
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/api', router);
+app.use(errorHandler); // Registramos un manejador de errores
 
 
 // Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
@@ -43,7 +44,7 @@ console.log('Magic happens on port ' + port);
 function errorHandler(err, req, res, next) {
   console.error(err.name); // se imprime error en consola
   //actuamos dependiento el tipo de error 
-  if (err instanceof ApiError){
+  if (err instanceof errors.ApiError){
     res.status(err.status);
     res.json({status: err.status, errorCode: err.errorCode});
   } else if (err.type === 'entity.parse.failed'){
@@ -64,20 +65,16 @@ router.route('/artists').post(function (req, res)
 {
   const data = req.body;
   const unqfy = getUNQfy();
-  try
+
+  // Lanzar error si no se ingresaron los parámetros correctos.
+  if (data.name === undefined || data.country === undefined)
   {
-    // Lanzar error si no se ingresaron los parámetros correctos.
-    if (data.name === undefined || data.country === undefined)
-    {
-      throw new errors.MissingParameters;
-    }
-    const newArtist = unqfy.addArtist(data);
-    res.json({status: 200, data: JSON.stringify(newArtist)});
+    throw new errors.MissingParameters;
   }
-  catch(err)
-  {
-    res.json({status:err.status, error:err.errorCode});
-  }
+  const newArtist = unqfy.addArtist(data);
+  res.json({status: 201, data: newArtist});
+  res.status(201);
+ 
   saveUNQfy(unqfy);
 });
 
@@ -86,15 +83,10 @@ router.route('/artists/:id').get(function (req, res)
 {
   const idArtist = parseInt(req.params.id);
   const unqfy = getUNQfy();
-  try
-  {
-    const artist = unqfy.getArtistById(idArtist);
-    res.json({status: 200, data: JSON.stringify(artist)});
-  }
-  catch(err)
-  {
-    res.json({status:err.status, error:err.errorCode});
-  }
+
+  const artist = unqfy.getArtistById(idArtist);
+  res.json({status: 200, data: JSON.stringify(artist)});
+  res.status(200);
 });
 
 
@@ -104,15 +96,11 @@ router.route('/artists/:id').delete(function (req, res)
 {
   const idArtist = parseInt(req.params.id);
   const unqfy = getUNQfy();
-  try
-  {
-    unqfy.removeArtist(unqfy.getArtistById(idArtist).getName());
-    res.json({status: 204});
-  }
-  catch(err)
-  {
-    res.json({status:err.status, error:err.errorCode});
-  }
+
+  unqfy.removeArtist(unqfy.getArtistById(idArtist).getName());
+  res.json({status: 204});
+  res.status(204);
+ 
   saveUNQfy(unqfy);
 });
 
@@ -122,22 +110,18 @@ router.route('/artists').get(function (req, res)
 {
   const search = req.query.name;
   const unqfy = getUNQfy();
-  try
+
+  if (search !== undefined)
   {
-    if (search !== undefined)
-    {
-      artists = unqfy.searchArtistsByName(search);
-    }
-    else // Si no se ingreso ninguna busqueda...
-    {
-      artists = unqfy.searchArtistsByName(''); //... listar todos los artistas.
-    }
-    res.json({status: 200, data: JSON.stringify(artists)});
+    artists = unqfy.searchArtistsByName(search);
   }
-  catch(err)
+  else // Si no se ingreso ninguna busqueda...
   {
-    res.json({status:err.status, error:err.errorCode});
+    artists = unqfy.searchArtistsByName(''); //... listar todos los artistas.
   }
+  res.json(artists);
+  res.status(200);
+  
 });
 
 // --- ALBUMES ---
@@ -147,23 +131,25 @@ router.route('/albums').post(function (req, res)
 {
   const data = req.body;
   const unqfy = getUNQfy();
-  try
+
+  // Si o se pasaron los parametros correspondientes, lanzo una excepcion.
+  if (data.artistId === undefined || data.name === undefined || data.year === undefined)
   {
-    // Si o se pasaron los parametros correspondientes, lanzo una excepcion.
-    if (data.name === undefined || data.year === undefined)
-    {
-      throw new errors.MissingParameters;
-    }
-    const albumData = {name:data.name, year: data.year};
-    const newAlbum = unqfy.addAlbum(data.artistId, albumData);
-    res.json({status: 200, data: JSON.stringify(newAlbum)});
+    throw new errors.MissingParameters;
   }
-  catch(err)
+  const albumData = {name:data.name, year: data.year};
+  const artist = unqfy.getArtistByIdNotError(data.artistId);
+  if(artist === undefined)
   {
-    res.json({status:err.status, error:err.errorCode});
+    throw new errors.CantAddAlbumToUnexistingArtistError();
   }
+  const newAlbum = unqfy.addAlbum(data.artistId, albumData);
+  res.json({status: 201, data: JSON.stringify(newAlbum)});
+  res.status(201);
+ 
   saveUNQfy(unqfy);
 });
+
 
 
 // Obtener un Album por su id.
@@ -171,15 +157,12 @@ router.route('/albums/:id').get(function (req, res)
 {
   const idAlbums = parseInt(req.params.id);
   const unqfy = getUNQfy();
-  try
-  {
-    const album = unqfy.getAlbumById(idAlbums);
-    res.json({status: 200, data: JSON.stringify(album)});
-  }
-  catch(err)
-  {
-    res.json({status:err.status, error:err.errorCode});
-  }
+  
+  const album = unqfy.getAlbumById(idAlbums);
+
+  res.json({status: 200, data: JSON.stringify(album)});
+  res.status(200);
+ 
 });
 
 
@@ -188,18 +171,14 @@ router.route('/albums/:id').delete(function (req, res)
 {
   const idAlbum = parseInt(req.params.id);
   const unqfy = getUNQfy();
-  try
-  {
-    const album = unqfy.getAlbumById(idAlbum);
-    const artist = unqfy.getArtistFromAlbum(album);
-    // unqfy.removeAlbumById(idAlbum);
-    unqfy.removeAlbum(artist.getName(), album.getName());
-    res.json({status: 204});
-  }
-  catch(err)
-  {
-    res.json({status:err.status, error:err.errorCode});
-  }
+
+  const album = unqfy.getAlbumById(idAlbum);
+  const artist = unqfy.getArtistFromAlbum(album);
+  // unqfy.removeAlbumById(idAlbum);
+  unqfy.removeAlbum(artist.getName(), album.getName());
+  res.json({status: 204});
+  res.status(204);
+  
   saveUNQfy(unqfy);
 });
 
@@ -209,22 +188,18 @@ router.route('/albums').get(function (req, res)
 {
   const search = req.query.name;
   const unqfy = getUNQfy();
-  try
+ 
+  if (search !== undefined)
   {
-    if (search !== undefined)
-    {
-      albums = unqfy.searchAlbumsByName(search);
-    }
-    else // Si no se definio nada en la busqueda...
-    {
-      albums = unqfy.searchAlbumsByName(''); //... listar todos los albumes.
-    }
-    res.json({status: 200, data: JSON.stringify(albums)});
+    albums = unqfy.searchAlbumsByName(search);
   }
-  catch(err)
+  else // Si no se definio nada en la busqueda...
   {
-    res.json({status:err.status, error:err.errorCode});
+    albums = unqfy.searchAlbumsByName(''); //... listar todos los albumes.
   }
+  res.json(albums);
+  res.status(200);
+ 
 });
 
 
@@ -233,29 +208,25 @@ router.route('/lyrics').get(function async (req, res)
 {
   const trackId = parseInt(req.query.trackId);
   const unqfy = getUNQfy();
-  try
+ 
+  const track =unqfy.getTrackById(trackId);
+  const artist = unqfy.getArtistFromTrack(trackId);
+  if (track.hasLyrics())
   {
-    const track =unqfy.getTrackById(trackId);
-    console.log(track);
-    const artist = unqfy.getArtistFromTrack(trackId);
-    if (track.hasLyrics())
+    const lyricData = {name: track.getName(), lyrics: track.getLyrics()};
+    res.json({status: 200, data: lyricData});
+    res.status(200);
+  }
+  else
+  {
+    unqfy.getLyric(track, artist.getName()).then(() => 
     {
+      saveUNQfy(unqfy);
       const lyricData = {name: track.getName(), lyrics: track.getLyrics()};
       res.json({status: 200, data: lyricData});
-    }
-    else
-    {
-      unqfy.getLyric(track, artist.getName()).then(() => 
-      {
-        saveUNQfy(unqfy);
-        const lyricData = {name: track.getName(), lyrics: track.getLyrics()};
-        res.json({status: 200, data: lyricData});
-      });
-    }
+      res.status(200);
+    });
   }
-  catch(err)
-  {
-    res.json({status:err.status, error:err.errorCode});
-  }
+ 
   saveUNQfy(unqfy);
 });

@@ -8,6 +8,12 @@ class ApiError extends Error
   }
 }
 
+class UnexpectedFailureError extends ApiError{
+  constructor(){
+    super('UnexpectedFailureError', 500 , 'INTERNAL_SERVER_ERROR');    
+  }
+}
+
 class MissingParameters extends ApiError
 {
   constructor()
@@ -40,6 +46,12 @@ class ArtistIdNotFoundException extends ApiError
   }
 }
 
+class CantAddAlbumToUnexistingArtistError extends ApiError{
+  constructor(){
+    super('No se puede agregar un  album a un artista inexistente', 404, 'RELATED_RESOURCE_NOT_FOUND');    
+  }
+}
+
 class TrackIdNotFoundException extends ApiError
 {
   constructor(id)
@@ -64,4 +76,6 @@ module.exports = {
   AlbumIdNotFoundException,
   TrackIdNotFoundException,
   AlbumHasAlreadyBeenRegistered,
+  UnexpectedFailureError,
+  CantAddAlbumToUnexistingArtistError,
 };

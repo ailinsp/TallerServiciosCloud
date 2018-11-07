@@ -51,7 +51,7 @@ class MusixMatch
       }
 
       return trackResult.track_id;//... obtenemos su Id para buscar su letra.
-    }).catch((error) => console.log('No se encontro la letra.'));
+    }); //.catch((error) => console.log('No se encontro la letra.'));
   }
 
   getLyric (trackId)

@@ -7,9 +7,7 @@ const PlayList = require('./playList.js');
 const Artist = require('./artist.js');
 const Album = require('./album.js');
 const MusixMatch = require('./musixmatch.js');
-const Spotify = require('./spotify.js');
 const errors = require('./UNQfyApiErrors.js');
-//import {ArtistIdNotFoundException} from './UNQfyApiErrors';
 
 class UNQfy {
 
@@ -162,7 +160,7 @@ class UNQfy {
     const albumsList = this.artists.map(artist => artist.getAlbums());
     const albums = albumsList.reduce ((a,b) => { 
       return a.concat(b);
-    });
+    }, []);
 
     return albums;
   }
@@ -231,8 +229,7 @@ class UNQfy {
   // retorna: El artista con la id, si no existe muestra el error.
   getArtistById(id) 
   {
-    const result = this.getArtists().find(artista => artista.hasId(id));
-    
+    const result = this.getArtistByIdNotError(id);
     if (result === undefined)
     {
       throw new errors.ArtistIdNotFoundException(id);
@@ -241,13 +238,20 @@ class UNQfy {
     return result;
   }
 
+  // retorna: El artista con la id, si no existe devuelve undefined.
+  getArtistByIdNotError(id) 
+  {
+    return this.artists.find(artista => artista.hasId(id));
+  }
+
   // retorna: El track con la identificacion id, si no existe muestra el error.
   getTrackById(id) 
   {
     const result = this.getAllTracks().find(track => track.isTrack(id));
     if (result === undefined)
     {
-      throw new Error('No existe un track con la identificación: ' + id);
+      throw new errors.TrackIdNotFoundException(id);
+      // throw new Error('No existe un track con la identificación: ' + id);
     }
     
     return result;
