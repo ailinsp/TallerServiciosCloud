@@ -1,8 +1,9 @@
 class ApiError extends Error
 {
-  constructor(message, status, errorCode)
+  constructor(name, status, errorCode, meassage = null)
   {
-    super(message);
+    super(meassage || name);
+    this.name = name;
     this.status = status;
     this.errorCode = errorCode;
   }
@@ -10,7 +11,7 @@ class ApiError extends Error
 
 class UnexpectedFailureError extends ApiError{
   constructor(){
-    super('UnexpectedFailureError', 500 , 'INTERNAL_SERVER_ERROR');    
+    super('Fallo inesperado.', 500 , 'INTERNAL_SERVER_ERROR');    
   }
 }
 
@@ -42,13 +43,13 @@ class ArtistIdNotFoundException extends ApiError
 {
   constructor(id)
   {
-    super('No se encontro un artista con la identificacion' + id, 404, 'RESOURCE_NOT_FOUND');
+    super('No se encontro un artista con la identificacion ' + id, 404, 'RESOURCE_NOT_FOUND');
   }
 }
 
 class CantAddAlbumToUnexistingArtistError extends ApiError{
   constructor(){
-    super('No se puede agregar un  album a un artista inexistente', 404, 'RELATED_RESOURCE_NOT_FOUND');    
+    super('No se puede agregar un album a un artista inexistente.', 404, 'RELATED_RESOURCE_NOT_FOUND');    
   }
 }
 
@@ -56,7 +57,7 @@ class TrackIdNotFoundException extends ApiError
 {
   constructor(id)
   {
-    super('No se encontro un track con la identificacion' + id, 404, 'RESOURCE_NOT_FOUND');
+    super('No se encontro un track con la identificacion ' + id, 404, 'RESOURCE_NOT_FOUND');
   }
 }
 
@@ -64,7 +65,7 @@ class AlbumIdNotFoundException extends ApiError
 {
   constructor(id)
   {
-    super('No se encontro un album con la identificacion' + id, 404, 'RESOURCE_NOT_FOUND');
+    super('No se encontro un album con la identificacion ' + id, 404, 'RESOURCE_NOT_FOUND');
   }
 }
 

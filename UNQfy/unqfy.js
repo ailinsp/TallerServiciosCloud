@@ -16,7 +16,7 @@ class UNQfy {
     this.artists = [];
     this.playlists = [];
     this.ids = 0;
-    this.token = 'BQB82B1QifeUx7_AaxI6wbYyCjc46nOOgn4RMjtEQVT9JdD9-hhSztDgvp2eXvWiJyrkvJm6rRaLX8OV0szB1Tyd-s_z78NtYLLepgwSTSQVIN9mdLhlDgzX8WNE2Nv7CNbTPquPClX3P0gN52Jg_WBwOej91h3J7szt5Ga6uLZBIAeaWa-h';
+    this.token = 'BQD7davBCkN-Z39J6sz467cv9Ff_0JtYVcwIDptwAqfdD2x1-qOJnQUX6H70b36oM6kyFGoPF9HbtRNsY_x38F6UW3xvs3RQZFD4zNCXy79e0wq4fcyp9xxtL3W-C-jf6h4aM5pdCheotygnqYK8C_E5CcDlkot7M60RrI8VXcJ9NaK62UHT';
   }
   // returna: Una identificación irrepetible.
   getId()

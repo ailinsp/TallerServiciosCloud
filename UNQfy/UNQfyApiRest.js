@@ -43,16 +43,21 @@ console.log('Magic happens on port ' + port);
 // ErrorHandler
 function errorHandler(err, req, res, next) {
   console.error(err.name); // se imprime error en consola
-  //actuamos dependiento el tipo de error 
-  if (err instanceof errors.ApiError){
+  //actuamos dependiendo el tipo de error 
+  if (err instanceof errors.ApiError)
+  {
     res.status(err.status);
     res.json({status: err.status, errorCode: err.errorCode});
-  } else if (err.type === 'entity.parse.failed'){
+  } 
+  else if (err.type === 'entity.parse.failed')
+  {
   // body-parser error para JSON invalido
     res.status(err.status);
     res.json({status: err.status, errorCode: 'BAD_REQUEST'});
-  } else {
-  // continua con el error handler por defecto
+  } 
+  else 
+  {
+    // continua con el error handler por defecto
     next(err);
   }
 }
@@ -72,8 +77,8 @@ router.route('/artists').post(function (req, res)
     throw new errors.MissingParameters;
   }
   const newArtist = unqfy.addArtist(data);
-  res.json({status: 201, data: newArtist});
   res.status(201);
+  res.json(newArtist);
  
   saveUNQfy(unqfy);
 });
@@ -85,7 +90,7 @@ router.route('/artists/:id').get(function (req, res)
   const unqfy = getUNQfy();
 
   const artist = unqfy.getArtistById(idArtist);
-  res.json({status: 200, data: JSON.stringify(artist)});
+  res.json(artist);
   res.status(200);
 });
 
@@ -98,10 +103,9 @@ router.route('/artists/:id').delete(function (req, res)
   const unqfy = getUNQfy();
 
   unqfy.removeArtist(unqfy.getArtistById(idArtist).getName());
-  res.json({status: 204});
-  res.status(204);
- 
   saveUNQfy(unqfy);
+  res.status(204);
+  res.json();
 });
 
 
@@ -144,8 +148,8 @@ router.route('/albums').post(function (req, res)
     throw new errors.CantAddAlbumToUnexistingArtistError();
   }
   const newAlbum = unqfy.addAlbum(data.artistId, albumData);
-  res.json({status: 201, data: JSON.stringify(newAlbum)});
   res.status(201);
+  res.json(newAlbum);
  
   saveUNQfy(unqfy);
 });
@@ -160,7 +164,7 @@ router.route('/albums/:id').get(function (req, res)
   
   const album = unqfy.getAlbumById(idAlbums);
 
-  res.json({status: 200, data: JSON.stringify(album)});
+  res.json(album);
   res.status(200);
  
 });
@@ -174,12 +178,10 @@ router.route('/albums/:id').delete(function (req, res)
 
   const album = unqfy.getAlbumById(idAlbum);
   const artist = unqfy.getArtistFromAlbum(album);
-  // unqfy.removeAlbumById(idAlbum);
   unqfy.removeAlbum(artist.getName(), album.getName());
-  res.json({status: 204});
-  res.status(204);
-  
   saveUNQfy(unqfy);
+  res.status(204);
+  res.json();
 });
 
 

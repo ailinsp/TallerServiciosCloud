@@ -12,12 +12,12 @@ Borrar un artista:						HECHO
 	- Borrar un artista inexistente	HECHO
 
 Buscar artistas:						HECHO
-	-  JSON invalido en el body.		FALTA
+	-  JSON invalido en el body.		HECHO
 
 Agregar un album a un artista;		HECHO
 	- Album repetido					HECHO
 	- Mal ingreso de parametros		HECHO
-	- JSON invalido en el body.		FALTA
+	- JSON invalido en el body.		HECHO
 
 Obtener un album:					HECHO
 	- No existe el album				HECHO
@@ -27,6 +27,6 @@ Borrar un album:						HECHO
 	- Borrar un album inexistente	HECHO
 
 Buscar albumes:						HECHO
-	- JSON invalido en el body.		FALTA
+	- JSON invalido en el body.		HECHO
 
-Buscar letra de una cancion:			MAL (trae [])
+Buscar letra de una cancion:			HECHO
