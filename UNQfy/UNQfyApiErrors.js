@@ -9,15 +9,7 @@ class ApiError extends Error
   }
 }
 
-class InvalidOrUnexistingURLError extends ApiError
-{
-  constructor(){
-    super('URL invalida o inexistente', 404, 'RESOURCE_NOT_FOUND');    
-  }
-}
-
-class UnexpectedFailureError extends ApiError
-{
+class UnexpectedFailureError extends ApiError{
   constructor(){
     super('Fallo inesperado.', 500 , 'INTERNAL_SERVER_ERROR');    
   }
@@ -87,5 +79,4 @@ module.exports = {
   AlbumHasAlreadyBeenRegistered,
   UnexpectedFailureError,
   CantAddAlbumToUnexistingArtistError,
-  InvalidOrUnexistingURLError,
 };

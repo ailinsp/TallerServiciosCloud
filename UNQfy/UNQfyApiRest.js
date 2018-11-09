@@ -9,49 +9,11 @@ const fs = require('fs'); // se necesita para guardar/cargar unqfy
 const bodyParser = require('body-parser');
 const errors = require('./UNQfyApiErrors.js'); // api de errores
 
-app.use('/api', router);
-app.listen(port);
-console.log('Magic happens on port ' + port);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/api', router);
 app.use(errorHandler); // Registramos un manejador de errores
 
-// Error de URL invalida
-app.use((req, res, err) => {
-  const error = new errors.InvalidOrUnexistingURLError();
-  res.status(error.status);
-  res.json({status: error.status, errorCode:error.errorCode});
-});
-
-// ErrorHandler
-function errorHandler(err, req, res, next) {
-  console.error(err.name); // se imprime error en consola
-  //actuamos dependiendo el tipo de error 
-  if (err instanceof errors.ApiError)
-  {
-    res.status(err.status);
-    res.json({status: err.status, errorCode: err.errorCode});
-  } 
-  else if (err.type === 'entity.parse.failed')
-  {
-  // body-parser error para JSON invalido
-    res.status(err.status);
-    res.json({status: err.status, errorCode: 'BAD_REQUEST'});
-  } 
-  else 
-  {
-    //Internal error
-    const error = new errors.UnexpectedFailureError();
-    res.status(error.status);
-    res.json({status: error.status, errorCode: error.errorCode});
-    // continua con el error handler por defecto
-    //next(err);
-  }
-
-}
-
-// <*><*><*><*><*> PERSISTENCIA DE UNQFY <*><*><*><*><*>
 
 // Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
 function getUNQfy(filename = 'data.json') {
@@ -74,6 +36,32 @@ router.get('/', (req, res) =>
   res.json({ message: 'hooray! welcome to our api!' });
 });
 
+app.use('/api', router);
+app.listen(port);
+console.log('Magic happens on port ' + port);
+
+// ErrorHandler
+function errorHandler(err, req, res, next) {
+  console.error(err.name); // se imprime error en consola
+  //actuamos dependiendo el tipo de error 
+  if (err instanceof errors.ApiError)
+  {
+    res.status(err.status);
+    res.json({status: err.status, errorCode: err.errorCode});
+  } 
+  else if (err.type === 'entity.parse.failed')
+  {
+  // body-parser error para JSON invalido
+    res.status(err.status);
+    res.json({status: err.status, errorCode: 'BAD_REQUEST'});
+  } 
+  else 
+  {
+    // continua con el error handler por defecto
+    next(err);
+  }
+}
+
 
 // --- ARTISTAS ---
 
@@ -86,7 +74,7 @@ router.route('/artists').post(function (req, res)
   // Lanzar error si no se ingresaron los parámetros correctos.
   if (data.name === undefined || data.country === undefined)
   {
-    throw new errors.MissingParameters();
+    throw new errors.MissingParameters;
   }
   const newArtist = unqfy.addArtist(data);
   res.status(201);
@@ -151,7 +139,7 @@ router.route('/albums').post(function (req, res)
   // Si o se pasaron los parametros correspondientes, lanzo una excepcion.
   if (data.artistId === undefined || data.name === undefined || data.year === undefined)
   {
-    throw new errors.MissingParameters();
+    throw new errors.MissingParameters;
   }
   const albumData = {name:data.name, year: data.year};
   const artist = unqfy.getArtistByIdNotError(data.artistId);
