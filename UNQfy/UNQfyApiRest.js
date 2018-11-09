@@ -40,6 +40,13 @@ app.use('/api', router);
 app.listen(port);
 console.log('Magic happens on port ' + port);
 
+// Error de URL invalida
+app.use((req, res, err) => {
+  const error = new errors.InvalidOrUnexistingURLError();
+  res.status(error.status);
+  res.json({status: error.status, errorCode:error.errorCode});
+});
+
 // ErrorHandler
 function errorHandler(err, req, res, next) {
   console.error(err.name); // se imprime error en consola
