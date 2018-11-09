@@ -16,8 +16,7 @@ class InvalidOrUnexistingURLError extends ApiError
   }
 }
 
-class UnexpectedFailureError extends ApiError
-{
+class UnexpectedFailureError extends ApiError{
   constructor(){
     super('Fallo inesperado.', 500 , 'INTERNAL_SERVER_ERROR');    
   }

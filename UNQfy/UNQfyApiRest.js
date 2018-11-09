@@ -9,13 +9,36 @@ const fs = require('fs'); // se necesita para guardar/cargar unqfy
 const bodyParser = require('body-parser');
 const errors = require('./UNQfyApiErrors.js'); // api de errores
 
-app.use('/api', router);
-app.listen(port);
-console.log('Magic happens on port ' + port);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/api', router);
 app.use(errorHandler); // Registramos un manejador de errores
+
+
+// Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
+function getUNQfy(filename = 'data.json') {
+  let unqfy = new unqmod.UNQfy();
+  if (fs.existsSync(filename)) {
+    unqfy = unqmod.UNQfy.load(filename);
+  }
+  return unqfy;
+}
+
+function saveUNQfy(unqfy, filename = 'data.json') {
+  unqfy.save(filename);
+}
+
+// <*><*><*><*><*> IMPLEMENTACION SERVICIOS <*><*><*><*><*>
+
+// Ruta inicial de nuestra API
+router.get('/', (req, res) => 
+{
+  res.json({ message: 'hooray! welcome to our api!' });
+});
+
+app.use('/api', router);
+app.listen(port);
+console.log('Magic happens on port ' + port);
 
 // Error de URL invalida
 app.use((req, res, err) => {
@@ -41,38 +64,10 @@ function errorHandler(err, req, res, next) {
   } 
   else 
   {
-    //Internal error
-    const error = new errors.UnexpectedFailureError();
-    res.status(error.status);
-    res.json({status: error.status, errorCode: error.errorCode});
     // continua con el error handler por defecto
-    //next(err);
+    next(err);
   }
-
 }
-
-// <*><*><*><*><*> PERSISTENCIA DE UNQFY <*><*><*><*><*>
-
-// Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
-function getUNQfy(filename = 'data.json') {
-  let unqfy = new unqmod.UNQfy();
-  if (fs.existsSync(filename)) {
-    unqfy = unqmod.UNQfy.load(filename);
-  }
-  return unqfy;
-}
-
-function saveUNQfy(unqfy, filename = 'data.json') {
-  unqfy.save(filename);
-}
-
-// <*><*><*><*><*> IMPLEMENTACION SERVICIOS <*><*><*><*><*>
-
-// Ruta inicial de nuestra API
-router.get('/', (req, res) => 
-{
-  res.json({ message: 'hooray! welcome to our api!' });
-});
 
 
 // --- ARTISTAS ---
@@ -86,7 +81,7 @@ router.route('/artists').post(function (req, res)
   // Lanzar error si no se ingresaron los parámetros correctos.
   if (data.name === undefined || data.country === undefined)
   {
-    throw new errors.MissingParameters();
+    throw new errors.MissingParameters;
   }
   const newArtist = unqfy.addArtist(data);
   res.status(201);
@@ -151,7 +146,7 @@ router.route('/albums').post(function (req, res)
   // Si o se pasaron los parametros correspondientes, lanzo una excepcion.
   if (data.artistId === undefined || data.name === undefined || data.year === undefined)
   {
-    throw new errors.MissingParameters();
+    throw new errors.MissingParameters;
   }
   const albumData = {name:data.name, year: data.year};
   const artist = unqfy.getArtistByIdNotError(data.artistId);

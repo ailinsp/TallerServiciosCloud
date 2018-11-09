@@ -1,0 +1,20 @@
+
+npm install --save express request
+
+1) Spotify :
+
+node generateSpotifyCredentials.js
+
+populateAlbumsForArtist artistName
+getAlbumByArtist artistName
+
+2) Musixmatch:
+
+getTracksByArtist artistName
+getLyric trackName artistName
+getTracksByArtist artistName
+
+3)Servicios:
+
+node UNQfyApiRest.js
+curl -v -X GET http://localhost:8080/api/
