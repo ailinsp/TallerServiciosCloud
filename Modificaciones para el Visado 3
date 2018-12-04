@@ -1,0 +1,31 @@
+
+FASE 1 - NOTICAR A USUARIOS DE NUEVOS ALBUMES
+
+1) Crear un nuevo servicio Notification donde  se notifica a los usuarios con interes en un artista, cuando publican un nuevo album.
+
+Implementar el servicio Notification:
+	Dominio: Implementar Notification, Suscripciones, Usuario, <idArtista>, servicioGmail.
+		* Notification: [Suscripcion] -> Una listade suscriptores
+			metodos: mandar mail a los suscriptores de x artista.
+		* Suscripcion: <idArtista>, [Usuario]-> Una suscripcion esta dado por un artista y su lista de usuarios.
+			metodo: suscribir, desuscribir
+	Servicio: '/api/notify' POST que recibe en el body un artista y un nombre del album nuevo del artista -> Avisa a los usuarios (manda un mail)
+	apiError: 
+		* json erroneo en el body
+		* Error inesperado
+
+Agregar a UNQfy:
+	Dominio: * implementar la clase ObjObservador con la lista de todos los artistas obtenida desde unqfy
+				metodos:	- Actualizar lista observale
+							- Notificar a Notification por medio del '/api/notify' cuando uno de estos artistas observados, obtiene un nuevo album.
+							- Agregar un nuevo objeto a observar (artista)
+							- Sacar un objetos observado (artista)
+	
+
+
+
+
+
+	
+	
+	

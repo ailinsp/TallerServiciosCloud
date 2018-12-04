@@ -225,6 +225,8 @@ router.route('/lyrics').get(function async (req, res)
     const lyricData = {name: track.getName(), lyrics: track.getLyrics()};
     res.json({status: 200, data: lyricData});
     res.status(200);
+    // Para crear una promesa:
+    // Promise.resolve(data);
   }
   else
   {

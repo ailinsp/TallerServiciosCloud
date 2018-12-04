@@ -1,0 +1,118 @@
+PERMISOS PARA DOCKER:
+
+1) habilitar el bus de Docker para que inicie al encender la  pc: sudo systemctl enable docker
+2)sudo groupadd dockersudo groupadd docker
+3)sudo usermod -aG docker $USER
+_____________________________________________________________________
+
+Se crea una imagen -> se crea un container
+
+El container contiene una imagen
+
+Los containers tienen un estado y se puede modificar (no la imagen)
+
+Además, una imagen puede crear varios containers.
+
+Al destruir un container, se pierden los datos que se generaron.
+_______________________________________________________
+
+IMAGENES
+_______________________________________________________
+
+- DESCARGAR LA IMAGEN DE BUSYBOX:
+ docker pull busybox
+
+Busybox es una imagen livviana de inux sin entorno grafico, entre otras cosas.
+
+- VER IMAGENER DISPONIBLES:
+ docker images
+
+- DESCARGAR IMAGEN DE UBUNTU:
+ docker pull ubuntu:16.04
+
+- ELIMINAR UNA IMAGEN:
+ docker rmi <imagen>
+
+- PRAPARAR EL ENTORNO PARA CREAR UNA IMAGENES DOCKER:
+(una vez creado el service.js)
+ - - CREAR EL PACKAGE.JSON
+   npm init
+
+   El packeage.json contiene la metadata de la aplicacion node que estamos construyendo (nombre, autor, licencia y sus dependencias). 
+
+- - AGREGAR LAS DEPENDENCIAS:
+  npm install --save express body-parser
+
+  Se agrega las dependencias del packeage.json creado anteirormente.
+  Se agregará el package-lock.json: Contiene las vesiones exactas de las dependencias... y las de sus dependencias.
+  Se crea un directorio node_modulescon las dependencias descargadas.
+
+- CREAR UNA IMAGEN DOCKER:
+ (Una vez creado y definido el archivo Dockerfile)
+
+- - CONTRUIR LA IMAGEN
+  docker build -t mi_primera_imagen .
+  
+  El punto al final es importante, indica que se debe buscar el archivo Dockerfile en donde se encuentra parado.En caso de tener otro nombre, se le agrega otro parametro:
+
+  docker build -t <nombre_imagen> -f Dockerfile2 .
+
+_______________________________________________________
+
+CONTAINERS
+_______________________________________________________
+
+- CREAR UN CONTAINER:
+  docker run ubuntu:16.04
+
+Esto crea un container con la imagen de ubuntu
+
+- LISTAR LOS CONTAINERS INSTANCIADOS:
+ docker ps -a
+
+Muestra: id del container, nombre, status, 
+
+- CREAR UN NUEVO CONTAINER Y EJECUTAR BASH DE FORMA INTERACTIVA:
+(Permite escribir comandos dentro del container)
+  docker run -it --name my_interactive_container ubuntu:16.04 /bin/bash
+
+- LISTAR LOS CONTAINERS ACTIVOS:
+ docker ps
+
+-- ESCRIBIR UN ARCHIVO CON EL BASH DEL CONTAINER:
+ echo "file created" > file.txt
+
+--  SALIR DEL BASH DEL CONTAINER:
+ exit
+
+- REINICIAR EL CONTAINER:
+ docker restart my_interactive_container
+
+(se reinicia con el mismo comando ejecutado en el run inicial, ej, '/bin/bash', y no se puede cambiar) Sin embargo, no se podrá escribir comandos, para eso, se hace lo siguiente:
+
+- ABRIR SHELL EN UN CONTAINER:
+ docker exec -it my_interactive_container bash
+
+- - MIRAR EL CONTENIDO DE UN ARCHIVO:
+ cat file.txt
+
+- PARAR LA EJECUCION DE UN CONTENEDOR
+ docker stop my_interactive_container
+
+- BORRAR CONTAINERS POR SU NOMBRE:
+ docker rm <container_name>
+
+- BORRAR CONTAINER POR SU ID:
+ docker rm <container_id>
+
+- EJECUTAR UN CONTAINER A PARTIR DE UNA IMAGEN CREADA:
+  docker run -p 5000:5000 --name app_express --user node mi_primera_imagen
+
+Recordemos que app_express es el nombre del container donde se ejecutara mi_primera_imagen
+El parametro -p enlaza un puerto del container con un puerto del host, de manera aislada.
+El parametro --user es para saber con que usuario se ejecuta la imagen, es decir que se pueden tener más de un usuario (como en cualquier SO), en este caso elegimos el usuario 'node'
+Se puede agregar el parametro '-d' (detacherd) a 'docker run', el cual corre el container y libera la terminal. Si se quiere ver los logs del container puede ejecutarse: docker logs <container>.
+
+
+
+

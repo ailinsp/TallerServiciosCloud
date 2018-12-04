@@ -3,8 +3,10 @@ npm install --save express request
 
 1) Spotify :
 
+
 node generateSpotifyCredentials.js
 
+node main.js getArtists
 populateAlbumsForArtist artistName
 getAlbumByArtist artistName
 
