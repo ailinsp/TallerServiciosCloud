@@ -178,3 +178,29 @@ router.route('/subscriptions').get(function (req, res)
       throw new errors.NonExistentArtistError(data.artistId); 
     });
 });
+
+
+// Eliminar todos los emails suscritos a un artista.
+router.route('/subscriptions').delete(function (req, res)
+{
+  const data = req.body;
+  const notifier = getNotifier();
+  // Si no se pasaron los parametros correspondientes, lanzo una excepcion.
+  if (data.artistId === undefined)
+  { 
+    throw new errors.MissingParametersError();
+  }
+  // Si el artista al que se intenta buscar no existe en UNQfy, lanza una excepcion.
+  notifier.findArtistUNQfy(data.artistId).then(() =>
+  {
+    notifier.removeAllSuscriptions(data.artistId);
+    console.log("Buscando la suscripcion del artista " + data.artistId + " luego de haberlo eliminado:");
+    console.log(notifier.findArtistSuscription(data.artistId));
+    res.status(200);
+    res.json();
+    saveNotifier(notifier);
+  }).catch(error =>
+    {
+      throw new errors.NonExistentArtistError(data.artistId); 
+    });
+});

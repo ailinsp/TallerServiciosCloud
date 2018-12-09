@@ -42,7 +42,7 @@ class Notifier {
   // Retorn la suscripcion perteneciente a idArtist
   findArtistSuscription(idArtist)
   {
-    return this.subscriptions.find(susc => susc.hasArtist(idArtist));
+    return this.subscriptions.find(susc => susc.hasArtist(parseInt(idArtist)) );
   }
 
   // retorna: Suscribe un usuario al artista artistId
@@ -104,11 +104,11 @@ class Notifier {
   // Elimina todas las suscripciones del artista idArtist
   removeAllSuscriptions(idArtist)
   {
-    const suscript = this.findArtistSuscription(idArtist);
-    if (! suscript === undefined)
+    const suscript = this.findArtistSuscription(parseInt(idArtist));
+    if (suscript !== undefined) // Si existe la suscripcion...
     {
-      const index = this.subscriptions.indexOf(suscript);
-      this.subscriptions(index);
+      const indexToRemove = this.subscriptions.indexOf(suscript);
+      this.subscriptions.splice(indexToRemove,1); // Se elimina.
     }
   }
 
