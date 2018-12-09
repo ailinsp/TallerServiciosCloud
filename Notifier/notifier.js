@@ -13,7 +13,7 @@ class Notifier {
   {
     this.subscriptions = [];
     this.unqfy = new ServiceUNQfy();
-    //this.serviceGmail = new ServiceGmail();
+    this.gmail = new ServiceGmail();
   }
 
   addSuscriptor(idArtist, email)
@@ -116,7 +116,7 @@ class Notifier {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [Notifier, ServiceUNQfy, Suscription];
+    const classes = [Notifier, ServiceUNQfy, ServiceGmail, Suscription];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
   

@@ -1,11 +1,13 @@
 const fs = require('fs');
 const promisify = require('util').promisify;
+const rp = require('request-promise');
 const {google} = require('googleapis');
 const gmailClient = require('./gmailClient');
+const errors = require('./notifierApiErrors.js'); // api de errores
 
 const gmail = gmailClient();
 
-class serviceGmail 
+class ServiceGmail 
 {
   constructor() 
   {
@@ -47,3 +49,5 @@ class serviceGmail
     return encodedMessage;
   }
 }
+
+module.exports = ServiceGmail;
