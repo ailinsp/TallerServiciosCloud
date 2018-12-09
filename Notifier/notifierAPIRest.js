@@ -122,7 +122,7 @@ router.route('/unsubscribe').post(function (req, res)
     saveNotifier(notifier);
   }).catch(error =>
     {
-      // throw new errors.NonExistentArtistError(data.artistId); 
+      throw new errors.NonExistentArtistError(data.artistId); 
     });
 
 });
