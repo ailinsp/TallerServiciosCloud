@@ -66,17 +66,17 @@ class Notifier {
   removeSuscription(artistName, email)
   {
     const idArtist = // consultar el servicio UNQfy por el id del artista artistName
-    this.desuscribed(idArtist, email)
+    this.unsubscribe(idArtist, email)
   }
 
-  desuscribed (idArtist, email)
+  unsubscribe (idArtist, email)
   {
-    const suscriptionArtist = this.findArtistSuscription(idArtist); // Busco la suscripcion del idArtista
-    const mySuscription = suscriptionArtist.findUser(email); // Buscar suscripcion de email en la suscripcion suscriptionArtist
-    if (! mySuscription === undefined) // Si estoy suscripto
+    const suscriptionArtist = this.findArtistSuscription(parseInt(idArtist)); // Busco la suscripcion del idArtista
+    if(suscriptionArtist === undefined)
     {
-      suscriptionArtist.desuscribed(email); // me desuscribo :D
+      throw new Error("No existe una suscripcion del artista con identificacion " + idArtist);
     }
+    suscriptionArtist.unsubscribe(email);
   }
 /*
   notify (idArtist)

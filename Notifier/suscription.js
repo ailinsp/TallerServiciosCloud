@@ -15,6 +15,16 @@ class Suscription
         }
     }
 
+    // Elimina un suscriptor, si no esta agregado, no hace nada.
+    unsubscribe(email)
+    {
+        if (this.hasUser(email)) // Si esta suscripto
+        {
+            const indexToRemove = this.users.indexOf(email);
+            this.users.splice(indexToRemove,1);
+        }
+    }
+
     // retorna: True si el id artistId es al mismo que el artista.
     hasArtist(artistId)
     {
@@ -25,11 +35,6 @@ class Suscription
     hasUser(email)
     {
         return this.users.includes(email);
-    }
-
-    addSuscriptor(idArtist)
-    {
-        
     }
 
 }  

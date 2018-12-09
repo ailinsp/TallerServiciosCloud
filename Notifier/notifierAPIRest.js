@@ -85,17 +85,44 @@ router.route('/subscribe').post(function (req, res)
   
   // Si el artista al que se intenta suscribir no existe en UNQfy, lanza una excepcion.
 
-  const artist = notifier.findArtistUNQfy(data.artistId).then(() =>
+  notifier.findArtistUNQfy(data.artistId).then(() =>
   {
     const newSuscriptor = notifier.suscribed(data.artistId, data.email);
-    const suscriptorData = {artistId:data.artistId, email: data.email};
     console.log(newSuscriptor);
     res.status(200);
-    res.json(suscriptorData);
+    res.json();
     saveNotifier(notifier);
   }).catch(error =>
     {
       throw new errors.NonExistentArtistError(data.artistId); 
+    });
+
+});
+
+// Desuscribir un usuario de un artista.
+router.route('/unsubscribe').post(function (req, res)
+{
+  const data = req.body;
+  const notifier = getNotifier();
+
+  // Si no se pasaron los parametros correspondientes, lanzo una excepcion.
+  if (data.artistId === undefined || data.email === undefined )
+  { 
+    throw new errors.MissingParametersError();
+  }
+  
+  // Si el artista al que se intenta desuscribir no existe en UNQfy, lanza una excepcion.
+  notifier.findArtistUNQfy(data.artistId).then(() =>
+  {
+    console.log("Encontre al artista y estoy por desuscribir...");
+    notifier.unsubscribe(data.artistId, data.email);
+    console.log(notifier.findArtistSuscription(data.artistId));
+    res.status(200);
+    res.json();
+    saveNotifier(notifier);
+  }).catch(error =>
+    {
+      // throw new errors.NonExistentArtistError(data.artistId); 
     });
 
 });
