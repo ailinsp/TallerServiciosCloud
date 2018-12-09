@@ -154,3 +154,27 @@ router.route('/notify').post(function (req, res)
     });
 
 });
+
+
+// Obtener todos los emails subscriptos a un artista.
+router.route('/subscriptions').get(function (req, res)
+{
+  const idArtist = req.query.artistId;
+  const notifier = getNotifier();
+  // Si no se pasaron los parametros correspondientes, lanzo una excepcion.
+  if (idArtist === undefined)
+  { 
+    throw new errors.MissingParametersError();
+  }
+  // Si el artista al que se intenta buscar no existe en UNQfy, lanza una excepcion.
+  notifier.findArtistUNQfy(idArtist).then(() =>
+  {
+    const users = notifier.getSubscribersFromArtist(idArtist);
+    const suscriptorsData = {artistId:idArtist, subscriptors: users};
+    res.status(200);
+    res.json(suscriptorsData);
+  }).catch(error =>
+    {
+      throw new errors.NonExistentArtistError(data.artistId); 
+    });
+});

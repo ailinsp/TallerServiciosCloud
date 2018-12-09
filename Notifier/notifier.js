@@ -90,6 +90,17 @@ class Notifier {
     suscription.notifySubscripber(this.gmail, subject, message, from);
   }
 
+  // retorna: Todos los suscriptores del artista idArtist.
+  getSubscribersFromArtist(idArtist)
+  {
+    const suscription = this.findArtistSuscription(parseInt(idArtist));
+    if (suscription === undefined) // Si aun no hay suscripcion del artista
+    {
+      return []; // retorno una lista vacía.
+    }
+    return suscription.getUsers();
+  }
+
   // Elimina todas las suscripciones del artista idArtist
   removeAllSuscriptions(idArtist)
   {

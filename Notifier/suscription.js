@@ -6,6 +6,11 @@ class Suscription
       this.users = [];
     }
 
+    getUsers()
+    {
+        return this.users;
+    }
+
     // Agrega un suscriptor, si ya esta agregado, no hace nada.
     suscribed(email)
     {
