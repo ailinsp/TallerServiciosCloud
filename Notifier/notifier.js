@@ -5,39 +5,61 @@ const rp = require('request-promise');
 // const errors = require('./notifierApiErrors.js');
 const ServiceUNQfy = require('./serviceUNQfy.js');
 const ServiceGmail = require('./serviceGmail.js');
+const Suscription = require('./suscription.js');
 
 class Notifier {
 
   constructor() 
   {
     this.subscriptions = [];
-    this.serviceUNQfy = new ServiceUNQfy();
-    this.serviceGmail = new ServiceGmail();
+    this.unqfy = new ServiceUNQfy();
+    //this.serviceGmail = new ServiceGmail();
   }
 
-  addSuscriptor(artistName, email)
+  addSuscriptor(idArtist, email)
   {
-    const idArtist = this.serviceUNQfy.findIdArtist(artistName);
-    // IMPLEMENTAR findIdArtist EN EL SERVICIO DE UNQFY
-    // consulta el servicio UNQfy por el id del artista artistName
-    this.suscribed(idArtist, email)
-  }
-
-  suscribed (idArtist, email)
-  {
-    const suscription = this.findArtistSuscription(idArtist); 
-    // IMPLEMENTAR findArtistSuscription  en suscription
-    // Busca suscripcion de idArtists
-
-    if (suscription === undefined)
+    const artist = this.findArtistUNQfy(idArtist);
+    if (artist === undefined)
     {
-      suscription = new Suscription(idArtist); // Creo una nueva suscripcion
-      suscription.suscribed(email); // ... le agrego un suscriptor
-      this.subscriptions.push(suscription); // Agrego una suscripcion nueva
+      throw new Error("No existe un artista con la identificacion " + idArtist);
+    }
+    return this.suscribed(idArtist, email)
+  }
+
+  // retorna: El artista con id idArtist en UNQfy.
+  findArtistUNQfy(idArtist)
+  {
+    return this.unqfy.findArtist(parseInt(idArtist));
+  }
+
+  // retorna: True si el email ya esta sucripto al artista artistId.
+  hasSuscription(artistId, email)
+  {
+    const suscription = this.findArtistSuscription(parseInt(artistId));
+    return suscription.hasUser(email);
+  }
+
+  // Retorn la suscripcion perteneciente a idArtist
+  findArtistSuscription(idArtist)
+  {
+    return this.subscriptions.find(susc => susc.hasArtist(idArtist));
+  }
+
+  // retorna: Suscribe un usuario al artista artistId
+  suscribed (artistId, email)
+  {
+    const suscription = this.findArtistSuscription(parseInt(artistId));
+    if (suscription === undefined) // Si no se encontro una suscripcion para artistId
+    {
+      const newSuscription = new Suscription(parseInt(artistId)); // Creo una nueva suscripcion
+      newSuscription.suscribed(email); // ... le agrego un suscriptor
+      this.subscriptions.push(newSuscription); // Agrego una suscripcion nueva
+      return newSuscription;
     }
     else
     {
-      suscription.suscribed(email)
+      suscription.suscribed(email) // Solo le agrego un nuevo suscriptor
+      return suscription;
     }
   }
 
@@ -56,7 +78,7 @@ class Notifier {
       suscriptionArtist.desuscribed(email); // me desuscribo :D
     }
   }
-
+/*
   notify (idArtist)
   {
     const mails = this.subscriptions.getMailsSuscriptors(idArtist);
@@ -67,7 +89,7 @@ class Notifier {
     // IMPLEMENTAR notifySuscriptor en serviceGmail
     // Manda un mail por gmail
   }
-
+*/
   // Elimina todas las suscripciones del artista idArtist
   removeAllSuscriptions(idArtist)
   {
@@ -79,11 +101,6 @@ class Notifier {
     }
   }
 
-  // Retorn la suscripcion perteneciente a idArtist
-  findArtistSuscription(idArtist)
-  {
-    this.subscriptions.find(susc => susc.hasArtist(idArtist));
-  }
 
   save(filename) 
   {
@@ -99,7 +116,7 @@ class Notifier {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [Notifier,];
+    const classes = [Notifier, ServiceUNQfy, Suscription];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
   

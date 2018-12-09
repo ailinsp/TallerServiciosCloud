@@ -1,9 +1,30 @@
 class Suscription 
 {
-    constructor() 
+    constructor(id)
     {
-      this.artista = undefined; // id del artista
-      this.usuarios = [];
+      this.artist = id; // id del artista
+      this.users = [];
+    }
+
+    // Agrega un suscriptor, si ya esta agregado, no hace nada.
+    suscribed(email)
+    {
+        if (! this.hasUser(email))
+        {
+            this.users.push(email);
+        }
+    }
+
+    // retorna: True si el id artistId es al mismo que el artista.
+    hasArtist(artistId)
+    {
+        return this.artist === artistId;
+    }
+
+    // retorna: True si el usuario del email esta suscripto al artista.
+    hasUser(email)
+    {
+        return this.users.includes(email);
     }
 
     addSuscriptor(idArtist)
@@ -13,6 +34,4 @@ class Suscription
 
 }  
 
-module.exports = {
-    Suscription, 
-};
+module.exports = Suscription;
