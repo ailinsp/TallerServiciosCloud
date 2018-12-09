@@ -78,18 +78,18 @@ class Notifier {
     }
     suscriptionArtist.unsubscribe(email);
   }
-/*
-  notify (idArtist)
-  {
-    const mails = this.subscriptions.getMailsSuscriptors(idArtist);
-    // IMPLEMENTAR getMailsSuscriptors en suscription
-    // obtiene los mail correspondientes a idArtist
 
-    mails.forEach(mail => this.serviceGmail.notifySuscriptor(mail)); 
-    // IMPLEMENTAR notifySuscriptor en serviceGmail
-    // Manda un mail por gmail
+  // Manda un mail de notificacion a los usuarios suscriptos al artista artistId con las especificaciones:
+  // subject: asunto del email
+  // message: el contenido del email
+  // from: el emisor del email
+  notify (artistId, subject, message, from)
+  {
+    const suscription = this.findArtistSuscription(parseInt(artistId));
+    console.log(suscription);
+    suscription.notifySubscripber(this.gmail, subject, message, from);
   }
-*/
+
   // Elimina todas las suscripciones del artista idArtist
   removeAllSuscriptions(idArtist)
   {

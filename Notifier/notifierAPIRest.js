@@ -126,3 +126,31 @@ router.route('/unsubscribe').post(function (req, res)
     });
 
 });
+
+
+// Notifica a los usuarios suscriptos via mail.
+router.route('/notify').post(function (req, res)
+{
+  const data = req.body;
+  const notifier = getNotifier();
+
+  // Si no se pasaron los parametros correspondientes, lanzo una excepcion.
+  if (data.artistId === undefined || data.subject === undefined || data.message === undefined || data.from === undefined)
+  { 
+    throw new errors.MissingParametersError();
+  }
+  
+  // Si el artista al que se intenta desuscribir no existe en UNQfy, lanza una excepcion.
+  notifier.findArtistUNQfy(data.artistId).then(() =>
+  {
+    console.log("Se encontro el artista en UNQfy...");
+    notifier.notify(data.artistId, data.subject, data.message, data.from);
+    console.log("Notificacion enviada con exito.");
+    res.status(200);
+    res.json();
+  }).catch(error =>
+    {
+      throw new errors.NonExistentArtistError(data.artistId); 
+    });
+
+});

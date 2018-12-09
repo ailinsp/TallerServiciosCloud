@@ -25,6 +25,17 @@ class Suscription
         }
     }
 
+    // Manda un mail de notificacion a todos los suscriptores con las especificaciones:
+    // gmail: Servicio de mail de Gmail.
+    // subject: asunto del email
+    // message: el contenido del email
+    // from: el emisor del email
+    notifySubscripber(gmail, subject, message, from)
+    {
+        console.log("Listo para mandar los mails:");
+        this.users.forEach(mail => gmail.sendEmail(mail, subject, message, from));
+    }
+
     // retorna: True si el id artistId es al mismo que el artista.
     hasArtist(artistId)
     {

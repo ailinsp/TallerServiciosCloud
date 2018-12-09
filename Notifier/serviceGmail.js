@@ -14,14 +14,14 @@ class ServiceGmail
     // this.gmail = gmailClient();
   }
 
-  notifySuscriptor()
+  sendEmail(mail, subject, message, from)
   {
     console.log('Enviando mail...');
     gmail.users.messages.send(
     {
     userId: 'me',
     requestBody: {
-      raw: this.createMessage('liza.chambi@gmail.com', 'UNQfy - Nuevo album', "Hola! Se ha publicado un nuevo album de un artista de su interes en UNQfy."),
+      raw: this.createMessage(mail, subject, message),
     },
     });
     console.log('Done!');
