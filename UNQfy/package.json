@@ -9,6 +9,7 @@
     "picklejs": "github:lwoites/picklejs",
     "picklify": "^1.0.1",
     "request": "^2.88.0",
+    "request-promise": "^4.2.2",
     "u": "^0.1.0"
   },
   "devDependencies": {

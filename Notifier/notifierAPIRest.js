@@ -175,7 +175,7 @@ router.route('/subscriptions').get(function (req, res)
     res.json(suscriptorsData);
   }).catch(error =>
     {
-      throw new errors.NonExistentArtistError(data.artistId); 
+      throw new errors.NonExistentArtistError(idArtist); 
     });
 });
 
@@ -190,17 +190,12 @@ router.route('/subscriptions').delete(function (req, res)
   { 
     throw new errors.MissingParametersError();
   }
-  // Si el artista al que se intenta buscar no existe en UNQfy, lanza una excepcion.
-  notifier.findArtistUNQfy(data.artistId).then(() =>
-  {
+
     notifier.removeAllSuscriptions(data.artistId);
     console.log("Buscando la suscripcion del artista " + data.artistId + " luego de haberlo eliminado:");
     console.log(notifier.findArtistSuscription(data.artistId));
     res.status(200);
     res.json();
     saveNotifier(notifier);
-  }).catch(error =>
-    {
-      throw new errors.NonExistentArtistError(data.artistId); 
-    });
+ 
 });

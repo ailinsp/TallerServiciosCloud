@@ -8,6 +8,8 @@ const Artist = require('./artist.js');
 const Album = require('./album.js');
 const MusixMatch = require('./musixmatch.js');
 const errors = require('./UNQfyApiErrors.js');
+const Observer = require('./observer.js');
+const NotifierService = require('./notifierService.js');
 
 class UNQfy {
 
@@ -17,6 +19,7 @@ class UNQfy {
     this.playlists = [];
     this.ids = 0;
     this.token = 'BQBj5I6Cer7ubcaSFbgaiBxZIn5EVtEjEP3KEqVVpcIvGBpPUDuE5-294ILNCaUD7RqoND8Ci83-FFyC64obOgOkKUIF2Q94jDOdKPzMLB4ZGg5bwshICVuzattlMomlOaQuR_0Zn68cR0zXEG919TkKjqoAlgr2FkGJhiUGGK0wrlLt1l3N';
+    this.observer = new Observer();
   }
   // returna: Una identificación irrepetible.
   getId()
@@ -59,6 +62,7 @@ class UNQfy {
     else // No es necesario que este en el Else, puede estar afuera.
     {
       this.artists.push(newArtist);
+      this.observer.updateArtist(this.artists);
       return newArtist;
     }
   }
@@ -98,7 +102,7 @@ class UNQfy {
     
     const indexToRemove = this.getArtists().indexOf(artistToRemove);
     this.artists.splice(indexToRemove,1);
-
+    this.observer.notifyDeleteArtist(this.artists, artistToRemove);
     console.log('El artista ' + name + ' ha sido eliminado con exito.');
   }
 
@@ -123,8 +127,10 @@ class UNQfy {
   addAlbum(artistId, albumData) 
   {
     const newAlbum = new Album(this.getId(), albumData.name, parseInt(albumData.year));
-    this.getArtistById(parseInt(artistId)).addAlbum(newAlbum);
+    const artist = this.getArtistById(parseInt(artistId));
+    artist.addAlbum(newAlbum);
     console.log(newAlbum);
+    this.observer.notifyNewAlbum(artist, newAlbum.getName());
     return newAlbum;
   }
 
@@ -429,7 +435,7 @@ class UNQfy {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy, Track, PlayList, Artist, Album];
+    const classes = [UNQfy, Track, PlayList, Artist, Album, Observer, NotifierService];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
   
