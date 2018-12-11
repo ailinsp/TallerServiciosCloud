@@ -1,0 +1,22 @@
+{
+  "rootObjects": [
+    {
+      "id": "__00001__",
+      "name": null
+    }
+  ],
+  "objects": {
+    "__00001__": {
+      "statusLog": true,
+      "slack": "__00002__",
+      "listeners": "__00003__"
+    },
+    "__00002__": {},
+    "__00003__": {}
+  },
+  "types": {
+    "__00001__": "MonitorLog",
+    "__00002__": "ServiceSlack",
+    "__00003__": "Array"
+  }
+}
