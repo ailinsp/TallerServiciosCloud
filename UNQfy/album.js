@@ -20,9 +20,10 @@ class Album {
     this.tracks.push(track);
   }
 
-  searchTrack(trackName){
-    const searchedTrack = this.getTracks().find(track => track.isTrack(trackName));
-    if (searchedTrack === []){
+  searchTrack(trackName)
+  {
+    const searchedTrack = this.tracks.find(track => track.hasName(trackName));
+    if (searchedTrack === undefined){
       throw new Error('No se encontro el track ' + trackName);
     }     
     return searchedTrack;

@@ -17,6 +17,11 @@ class Track
     return this.id;
   }
 
+  hasName(trackName)
+  {
+    return this.name === trackName;
+  }
+
   hasLyrics()
   {
     return (this.lyrics !== undefined);

@@ -35,7 +35,7 @@ class MonitorLog {
       this.slack.log(message);
     }
   }
-
+/*
   // Manda un mensaje de log a Slack de un artista creado.
   logArtistCreated(artistName)
   {
@@ -71,7 +71,7 @@ class MonitorLog {
   {
     this.sendLog("Track eliminado: " + trackName);
   }
-
+*/
 
 
   save(filename) 

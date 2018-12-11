@@ -72,7 +72,7 @@ class Artist {
     {
       throw new Error('El artista ' + this.getName() + ' no tiene un album llamado ' + albumName);
     }
-    return result;
+    return result[0];
   }
 
   // pregunta si tiene algun album con la id albumId

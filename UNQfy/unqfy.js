@@ -10,6 +10,7 @@ const MusixMatch = require('./musixmatch.js');
 const errors = require('./UNQfyApiErrors.js');
 const Observer = require('./observer.js');
 const NotifierService = require('./notifierService.js');
+const MonitorLogService = require('./monitorLogService.js');
 
 class UNQfy {
 
@@ -62,7 +63,7 @@ class UNQfy {
     else // No es necesario que este en el Else, puede estar afuera.
     {
       this.artists.push(newArtist);
-      this.observer.updateArtist(this.artists);
+      this.observer.notifyNewArtist(this.artists, newArtist);
       return newArtist;
     }
   }
@@ -102,7 +103,7 @@ class UNQfy {
     
     const indexToRemove = this.getArtists().indexOf(artistToRemove);
     this.artists.splice(indexToRemove,1);
-    this.observer.notifyDeleteArtist(this.artists, artistToRemove);
+    this.observer.notifyRemoveArtist(this.artists, artistToRemove);
     console.log('El artista ' + name + ' ha sido eliminado con exito.');
   }
 
@@ -130,7 +131,7 @@ class UNQfy {
     const artist = this.getArtistById(parseInt(artistId));
     artist.addAlbum(newAlbum);
     console.log(newAlbum);
-    this.observer.notifyNewAlbum(artist, newAlbum.getName());
+    this.observer.notifyNewAlbum(artist, newAlbum);
     return newAlbum;
   }
 
@@ -149,7 +150,7 @@ class UNQfy {
     this.removeTracksFromPlaylists(tracksToRemove);
 
     artist.removeAlbum(albumToRemove);
-    
+    this.observer.notifyRemoveAlbum(albumName);
     console.log('Se ha eliminado el album ' + albumToRemove.getName() + ' del artista ' + artist.getName() + ' con exito.');
   }
 
@@ -200,6 +201,7 @@ class UNQfy {
     const newTrack = new Track (this.getId(), trackData.name, parseInt(trackData.duration), trackData.genres);
     //this.ids = this.id+1;
     this.getAlbumById(parseInt(albumId)).addNewTrack(newTrack);
+    this.observer.notifyNewTrack(newTrack);
     return newTrack;
   }
 
@@ -213,10 +215,11 @@ class UNQfy {
     {
       throw new Error('No se encontro un artista con el nombre ' + artistName);
     }
-    const album = artist.getAlbumByName(albumName);
-    const trackToRemove = album.searchTrack(trackName);
+    const albumS = artist.getAlbumByName(albumName);
+    const trackToRemove = albumS.searchTrack(trackName);
     this.playlists.forEach(playlist => playlist.removeTrack(trackToRemove));
-    album.removeTrack(trackToRemove);
+    albumS.removeTrack(trackToRemove);
+    this.observer.notifyRemoveTrack(trackToRemove);
     console.log('Se ha eliminado el track ' + trackName + ' del album ' + albumName + ' con exito.');
   }
 
@@ -435,7 +438,7 @@ class UNQfy {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy, Track, PlayList, Artist, Album, Observer, NotifierService];
+    const classes = [UNQfy, Track, PlayList, Artist, Album, Observer, NotifierService, MonitorLogService,];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
   
