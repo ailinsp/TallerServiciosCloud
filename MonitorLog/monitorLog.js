@@ -4,6 +4,8 @@ const fs = require('fs'); // para cargar/guarfar notifier
 const rp = require('request-promise');
 // const errors = require('./notifierApiErrors.js');
 const ServiceSlack = require('./serviceSlack.js');
+const ServiceUNQfy = require('./serviceUNQfy.js');
+const ServiceNotifier = require('./serviceNotifier.js');
 
 class MonitorLog {
 
@@ -11,6 +13,8 @@ class MonitorLog {
   {
     this.statusLog = false;
     this.slack = new ServiceSlack();
+    this.unqfy = new ServiceUNQfy();
+    this.notifier = new ServiceNotifier();
   }
 
   // Activa el servicio de notificacion a Slack.
@@ -35,43 +39,20 @@ class MonitorLog {
       this.slack.log(message);
     }
   }
-/*
-  // Manda un mensaje de log a Slack de un artista creado.
-  logArtistCreated(artistName)
+
+  // Manda una peticion de busqueda de artistas en UNQfy para monitorear si esta activo o no.
+  monitorUNQfy()
   {
-    this.sendLog("Artista creado: " + artistName);
+    return this.unqfy.getStatus();
   }
 
-  // Manda un mensaje de log a Slack de un artista eliminado.
-  logArtistRemoved(artistName)
+  // Manda una peticion del estado de Notifier para monitorear si esta activo o no.
+  // 0 = inactivo
+  // 1 = activo
+  monitorNotifier()
   {
-    this.sendLog("Artista eliminado: " + artistName);
+    return this.notifier.getStatus();
   }
-
-  // Manda un mensaje de log a Slack de un album creado.
-  logAlbumCreated(albumName)
-  {
-    this.sendLog("Album creado: " + albumName);
-  }
-
-  // Manda un mensaje de log a Slack de un album eliminado.
-  logAlbumRemoved(albumName)
-  {
-    this.sendLog("Album eliminado: " + albumName);
-  }
-
-  // Manda un mensaje de log a Slack de un track creado.
-  logTrackCreated(trackName)
-  {
-    this.sendLog("Track creado: " + trackName);
-  }
-
-  // Manda un mensaje de log a Slack de un track eliminado.
-  logTrackRemoved(trackName)
-  {
-    this.sendLog("Track eliminado: " + trackName);
-  }
-*/
 
 
   save(filename) 
@@ -88,7 +69,7 @@ class MonitorLog {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [MonitorLog, ServiceSlack];
+    const classes = [MonitorLog, ServiceSlack,ServiceUNQfy, ServiceNotifier];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
   

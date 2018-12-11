@@ -97,7 +97,8 @@ router.route('/deactivate').post(function (req, res)
 
 // Mandar un mensaje de log via Slack
 // Tambien se puede hacer uno diferente por cada mensaje para ser más especifico.
-router.route('/log').post(function(req, res){
+router.route('/log').post(function(req, res)
+{
   const data = req.body;
   if (data.message === undefined)
   {
@@ -109,4 +110,58 @@ router.route('/log').post(function(req, res){
 	res.status(200);
 	res.json();
 		
+})
+
+// Informa si el servicio de UNQFy esta acivado o no.
+  // 0 = inactivo
+  // 1 = activo
+router.route('/monitorUNQfy').post(function(req, res)
+{
+  const monitorLog = getMonitorLog();
+
+  monitorLog.monitorUNQfy().then(response =>
+  {
+    var status = response;
+    console.log("monitorLog: "  + status);
+    if (parseInt(status) === 1)
+    {
+      console.log('El servicio de UNQfy esta activo.');
+      res.status(200);
+      res.json({status:"ACTIVO"});
+    }
+    else
+    {
+      console.log('El servicio de UNQfy esta inactivo.');
+      res.status(200);
+      res.json({status:"INACTIVO"});
+    }
+  });
+		
+})
+
+// Informa si el servicio de Notifier esta activado o no.
+  // 0 = inactivo
+  // 1 = activo
+router.route('/monitorNotifier').post(function(req, res)
+{
+  const monitorLog = getMonitorLog();
+
+  monitorLog.monitorNotifier().then(response  =>
+  {
+    var status = response;
+    console.log("monitorLog: "  + status);
+    if (parseInt(status) === 1)
+    {
+      console.log('El servicio de Notifier esta activo.');
+      res.status(200);
+      res.json({status:"ACTIVO"});
+    }
+    else
+    {
+      console.log('El servicio de Notifier esta inactivo.');
+      res.status(200);
+      res.json({status:"INACTIVO"});
+    }
+  });
+  
 })

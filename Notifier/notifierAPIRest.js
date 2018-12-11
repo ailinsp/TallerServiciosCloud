@@ -167,6 +167,7 @@ router.route('/subscriptions').get(function (req, res)
     throw new errors.MissingParametersError();
   }
   // Si el artista al que se intenta buscar no existe en UNQfy, lanza una excepcion.
+
   notifier.findArtistUNQfy(idArtist).then(() =>
   {
     const users = notifier.getSubscribersFromArtist(idArtist);
@@ -174,9 +175,9 @@ router.route('/subscriptions').get(function (req, res)
     res.status(200);
     res.json(suscriptorsData);
   }).catch(error =>
-    {
+  {
       throw new errors.NonExistentArtistError(idArtist); 
-    });
+  });
 });
 
 
@@ -198,4 +199,11 @@ router.route('/subscriptions').delete(function (req, res)
     res.json();
     saveNotifier(notifier);
  
+});
+
+// Obtener el estado del servicio.
+router.route('/status').get(function (req, res)
+{
+  res.status(200);
+  res.json({status:1});
 });

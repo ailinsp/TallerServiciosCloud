@@ -241,3 +241,10 @@ router.route('/lyrics').get(function async (req, res)
  
   saveUNQfy(unqfy);
 });
+
+// Obtener el estado del servicio.
+router.route('/status').get(function (req, res)
+{
+  res.status(200);
+  res.json({status:1});
+});
