@@ -15,10 +15,10 @@ class ServiceSlack
     const options = 
     {
         method: 'POST',
-        uri: 'https://hooks.slack.com/services/TCD2F8CMP/BEAC55LBX/oKvQsu2qUi44JA4X1mWKpjd',
+        uri: 'https://hooks.slack.com/services/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',
         body: 
         {
-            text: message
+          text: message
         },
         json: true,
     }
@@ -26,7 +26,8 @@ class ServiceSlack
     rp(options).then((response) => 
     {
         console.log("Se ha enviado una notificacion a Slack con exito.");
-    });
+    }).catch((error) => { console.log('Hubo un problema en la conexion con Slack.', error);
+  });
   }
 
 }
